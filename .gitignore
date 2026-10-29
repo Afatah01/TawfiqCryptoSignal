@@ -1,0 +1,2 @@
+.gradle/ build/ app/build/ local.properties *.iml .idea/ captures/ *.jks keystore.properties tools/
+__pycache__/ *.pyc .venv/

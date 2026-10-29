@@ -1,0 +1,7 @@
+# Test Results — 28 Oct 2026 (sandbox build machine, JDK 17 / SDK 35)
+- `./gradlew assembleDebug` — **BUILD SUCCESSFUL**, APK: `TawfiqCryptoSignal-debug.apk` (13 MB), verified with `aapt dump badging` (package `com.tawfiq.cryptosignal`, v1.0.0, minSdk 26, targetSdk 35) and `apksigner verify` (Android Debug cert).
+- `./gradlew testDebugUnitTest` — **2 tests, 0 failures**: (1) baseline $1,200/$1,000/reserve split + P/L math; (2) alert rule fires with correct message values. Note: supplied quantities are rounded, so qty×purchase-price = $1,199.81 at baseline prices (invested USD is stored separately as $1,200 — app uses stored invested amounts, per spec).
+- Backend (FastAPI) run locally: `GET /health` OK; `GET /api/prices` and `/api/ticker/BTC` returned **live Binance prices** (e.g. BTC ~$80,910 at test time) via `data-api.binance.vision`.
+- NOT tested (no physical device/emulator in sandbox): install on a phone, background notification delivery timing, WebSocket on-device. Please test: install APK → allow notifications → Settings → "Send test notification" → lock phone and wait for a WorkManager cycle (~15 min, or trigger via Android Studio). Exclude app from battery optimisation for reliability.
+## Known limitations
+Binance may geo-restrict some regions (app falls back to your Render backend, then CoinGecko); CoinGecko free tier rate-limits (backend caches 20–60s); Render free tier sleeps when idle (first call ~30–60s); charts fill from snapshots recorded after install; light theme only; signed release APK requires your own keystore (see README).
