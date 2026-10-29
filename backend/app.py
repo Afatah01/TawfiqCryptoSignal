@@ -14,6 +14,8 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], a
 _cache={"prices":(0,None),"market":(0,None)}
 def fresh(key,ttl=20):
     t,v=_cache.get(key,(0,None)); return v if v and time.time()-t<ttl else None
+@app.get("/")
+def home(): return {"service":"Tawfiq CryptoSignal API","status":"live","docs":"/docs","endpoints":["/health","/api/prices","/api/market","/api/ticker/BTC"]}
 @app.get("/health")
 def health(): return {"status":"ok","service":"tawfiq-cryptosignal","ts":int(time.time()*1000)}
 @app.get("/api/ticker/{symbol}")
