@@ -66,3 +66,5 @@ Local only (SQLite on-device): holdings, snapshots, rules, history. Network (HTT
 - CoinGecko free tier is rate-limited; backend caches (20–60s).
 - Charts start empty and fill as snapshots accumulate.
 - Dark mode: light emerald/white/gold is the designed default per spec.
+
+> Note: `gradle/wrapper/gradle-wrapper.jar` is not committed. Generate it once with `gradle wrapper --gradle-version 8.7` (any local Gradle install) or open the project in Android Studio, which does this automatically, before running `./gradlew`.

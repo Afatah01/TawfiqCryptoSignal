@@ -1,0 +1,2 @@
+<resources><style name="Theme.Tawfiq" parent="android:Theme.Material.Light.NoActionBar">
+<item name="android:statusBarColor">#046A38</item><item name="android:windowLightStatusBar">false</item></style></resources>
