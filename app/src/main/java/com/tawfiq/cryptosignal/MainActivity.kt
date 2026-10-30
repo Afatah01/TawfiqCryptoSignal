@@ -57,9 +57,9 @@ class MainActivity : ComponentActivity() {
         DisposableEffect(Unit) { vm.startStreaming(); onDispose { vm.stopStreaming() } }
         Scaffold(
             topBar = { TopAppBar(title = { Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(56.dp).clip(RoundedCornerShape(14.dp)))
+                Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(72.dp).clip(RoundedCornerShape(18.dp)))
                 Spacer(Modifier.width(10.dp))
-                Column { Text("Tawfiq CryptoSignal", fontWeight = FontWeight.Bold, color = EmeraldDark, style = MaterialTheme.typography.titleMedium)
+                Column { Text("Tawfiq CryptoSignal", fontWeight = FontWeight.ExtraBold, color = EmeraldDark, style = MaterialTheme.typography.headlineSmall)
                     Text("TRACK • ALERT • GROW", color = Gold, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                     Text("Powered by: Abdifatah Elmi Muhumed", color = Muted, style = MaterialTheme.typography.labelSmall) }
             } }, actions = { IconButton(onClick = { vm.refresh() }) { Icon(Icons.Filled.Refresh, "Refresh prices", tint = RoyalBlue) } },
