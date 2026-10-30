@@ -317,7 +317,7 @@ class MainActivity : ComponentActivity() {
     LazyColumn {
         item { Text("Settings", Modifier.padding(12.dp), style = MaterialTheme.typography.titleLarge, color = EmeraldDark, fontWeight = FontWeight.Bold) }
         item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
-            Text("📌 Original Investment (fixed — not editable)", fontWeight = FontWeight.Bold)
+            Text("📌 Investment Holdings", fontWeight = FontWeight.Bold)
             Text("BTC $500 · 0.006198 @ $80,642.26\nBNB $300 · 0.398894 @ $752.08\nXRP $200 · 151.52 @ $1.32\nUSDT $200 · 200 @ $1.00 (emergency reserve)\nTotal $1,200 (crypto $1,000 + reserve $200) · Baseline: 28 October 2026", color = Muted, style = MaterialTheme.typography.bodySmall)
         } } }
         item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
