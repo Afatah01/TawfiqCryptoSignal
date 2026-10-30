@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,8 +28,9 @@ import com.tawfiq.cryptosignal.ui.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-val Emerald = Color(0xFF046A38); val EmeraldDark = Color(0xFF034D29); val Gold = Color(0xFFC9A227)
-val LightBg = Color(0xFFF7FAF7); val UpGreen = Color(0xFF0A8A44); val DownRed = Color(0xFFC62828)
+val Emerald = Color(0xFF4776F5); val EmeraldDark = Color(0xFF263247); val Gold = Color(0xFFF5BD55)
+val RoyalBlue = Color(0xFF4776F5); val Turq = Color(0xFF16C9B2); val Violet = Color(0xFF9270F5); val EPurple = Color(0xFF7457E8)
+val LightBg = Color(0xFFF4F7FC); val UpGreen = Color(0xFF18B981); val DownRed = Color(0xFFF36B7F); val Muted = Color(0xFF8793A5)
 fun usd(v: Double): String = (if (v < 0) "-$" else "$") + "%,.2f".format(kotlin.math.abs(v))
 fun pct(v: Double): String = "%+.2f%%".format(v)
 fun timeStr(ts: Long): String = if (ts == 0L) "—" else SimpleDateFormat("dd MMM yyyy, HH:mm:ss", Locale.UK).format(Date(ts))
@@ -95,14 +97,14 @@ class MainActivity : ComponentActivity() {
 @Composable fun Dashboard(vm: MainViewModel, state: PortfolioState, go: (Int) -> Unit) {
     LazyColumn {
         item { StatusBanner(state) }
-        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Emerald), shape = RoundedCornerShape(20.dp)) {
+        item { Card(Modifier.fillMaxWidth().padding(12.dp).shadow(14.dp, RoundedCornerShape(24.dp)), colors = CardDefaults.cardColors(containerColor = Color.Transparent), shape = RoundedCornerShape(24.dp)) { Box(Modifier.background(Brush.linearGradient(listOf(RoyalBlue, Violet, EPurple))).fillMaxWidth()) {
             Column(Modifier.padding(20.dp)) {
                 Text("Total Portfolio Value (incl. $200 USDT reserve)", color = Color.White.copy(.85f))
                 Text(usd(state.total), color = Color.White, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
                 Text("Initial (28 Oct 2026): ${usd(state.initialTotal)}  •  Since purchase: ${usd(state.pnl)} (${pct(state.pnlPct)})", color = if (state.pnl >= 0) Color(0xFFB9F6CA) else Color(0xFFFFCDD2))
                 Text("24h market change (not since-purchase): ${usd(state.change24hUsd)}", color = Color.White.copy(.9f))
                 if (state.loading) LinearProgressIndicator(color = Gold, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
-            } } }
+            } } } }
         item { Row(Modifier.padding(horizontal = 12.dp)) {
             StatCard("Crypto invested\n$1,000 → now", usd(state.cryptoValue) + "\n" + pct(state.cryptoPnlPct), state.cryptoPnl >= 0, Modifier.weight(1f))
             StatCard("Emergency reserve\nUSDT (separate)", usd(state.reserveValue), true, Modifier.weight(1f)) } }
@@ -111,21 +113,24 @@ class MainActivity : ComponentActivity() {
             StatCard("Worst performer", (state.worst?.holding?.symbol ?: "—") + "\n" + pct(state.worst?.pnlPct ?: 0.0), (state.worst?.pnlPct ?: 0.0) >= 0, Modifier.weight(1f)) } }
         items(state.assets) { a -> AssetCard(a) }
         item { Text("Estimates use live public prices × your stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.", Modifier.padding(16.dp), color = Color.Gray, style = MaterialTheme.typography.bodySmall) }
-        item { Row(Modifier.padding(12.dp)) { Button(onClick = { go(2) }, colors = ButtonDefaults.buttonColors(containerColor = Gold), modifier = Modifier.weight(1f)) { Text("Market Highlights", color = Color.Black) }
+        item { Row(Modifier.padding(12.dp)) { Button(onClick = { go(2) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.weight(1f)) { Text("Market Highlights", color = Color.White) }
             Spacer(Modifier.width(8.dp)); OutlinedButton(onClick = { go(3) }, modifier = Modifier.weight(1f)) { Text("Price Alerts") } } }
     }
 }
 @Composable fun StatCard(label: String, value: String, up: Boolean, modifier: Modifier = Modifier) {
-    Card(modifier.padding(4.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(16.dp)) {
+    Card(modifier.padding(4.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
         Column(Modifier.padding(12.dp)) { Text(label, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             Text(value, color = if (up) UpGreen else DownRed, fontWeight = FontWeight.Bold) } }
 }
 @Composable fun AssetCard(a: AssetState) {
     val q = a.quote; val up = a.pnl >= 0
-    Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(16.dp)) {
+    val grad = when(a.holding.symbol){ "BTC" -> listOf(Color(0xFFFFF3E0), Color(0xFFFFE3B3)); "BNB" -> listOf(Color(0xFFFFF8E1), Color(0xFFFBE9B7)); "XRP" -> listOf(Color(0xFFE3F2FD), Color(0xFFCDEBFF)); else -> listOf(Color(0xFFE0F7F3), Color(0xFFC9F5EE)) }
+    val badge = when(a.holding.symbol){ "BTC" -> Color(0xFFF5A623); "BNB" -> Color(0xFFE3B341); "XRP" -> Color(0xFF4FA8E0); else -> Turq }
+    Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp).shadow(8.dp, RoundedCornerShape(20.dp)), colors = CardDefaults.cardColors(containerColor = Color.Transparent), shape = RoundedCornerShape(20.dp)) {
+      Box(Modifier.background(Brush.linearGradient(grad)).fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("${a.holding.symbol} — ${a.holding.name}", fontWeight = FontWeight.Bold, color = EmeraldDark)
+                Row(verticalAlignment = Alignment.CenterVertically) { Box(Modifier.size(30.dp).clip(RoundedCornerShape(9.dp)).background(badge), contentAlignment = Alignment.Center) { Text(a.holding.symbol.take(1), color = Color.White, fontWeight = FontWeight.Bold) }; Spacer(Modifier.width(8.dp)); Text("${a.holding.symbol} — ${a.holding.name}", fontWeight = FontWeight.Bold, color = EmeraldDark) }
                 Text(usd(a.currentValue), fontWeight = FontWeight.Bold) }
             Text("Qty ${a.holding.quantity} • Bought @ ${usd(a.holding.purchasePrice)} (invested ${usd(a.holding.investedUsd)})", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
             if (a.holding.isReserve) Text("Emergency reserve — excluded from crypto return.", color = Gold, style = MaterialTheme.typography.bodySmall)
@@ -133,8 +138,8 @@ class MainActivity : ComponentActivity() {
                 Text("Now ${usd(q.price)} • 24h ${pct(q.change24hPct)} • High ${usd(q.high24h)} / Low ${usd(q.low24h)}", style = MaterialTheme.typography.bodySmall)
                 Text("My P/L since purchase: ${usd(a.pnl)} (${pct(a.pnlPct)})", color = if (up) UpGreen else DownRed, fontWeight = FontWeight.SemiBold)
                 Text("Source: ${q.source} • ${timeStr(q.ts)}${if (q.stale) " • STALE" else ""}", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
-            } else Text("Waiting for live price…", color = Color.Gray)
-        } }
+            } else Text("Waiting for live price…", color = Muted)
+        } } }
 }
 
 @Composable fun PortfolioScreen(vm: MainViewModel, state: PortfolioState) {
@@ -224,7 +229,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable fun ChartCard(title: String, content: @Composable () -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(16.dp)) {
+    Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
         Column(Modifier.padding(14.dp)) { Text(title, fontWeight = FontWeight.Bold, color = EmeraldDark); content() } }
 }
 @Composable fun LineChart(values: List<Double>, color: Color) {
@@ -241,7 +246,7 @@ class MainActivity : ComponentActivity() {
 }
 @Composable fun AllocationChart(state: PortfolioState) {
     if (state.total <= 0) { Text("No data yet.", color = Color.Gray); return }
-    val colors = listOf(Emerald, Gold, Color(0xFF25A4E9), Color(0xFF9E9E9E))
+    val colors = listOf(RoyalBlue, Gold, Turq, Violet)
     Row(verticalAlignment = Alignment.CenterVertically) {
         Canvas(Modifier.size(130.dp)) { var start = -90f; state.assets.forEachIndexed { i, a ->
             val sweep = (a.currentValue / state.total * 360).toFloat(); drawArc(colors[i % colors.size], start, sweep, useCenter = true, size = Size(size.width, size.height)); start += sweep } }

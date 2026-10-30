@@ -2,24 +2,31 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tawfiq CryptoSignal — Live Portfolio</title><link rel="icon" href="/static/logo.png">
 <style>
-:root{--em:#046A38;--emd:#034D29;--gold:#C9A227;--bg:#F7FAF7;--up:#0A8A44;--dn:#C62828;--mut:#667}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#122}
-header{background:#fff;border-bottom:3px solid var(--gold);padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9}
-header img{width:44px;height:44px;border-radius:10px;object-fit:cover}header h1{font-size:19px;color:var(--emd);margin:0}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}nav button{border:1px solid var(--em);background:#fff;color:var(--em);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600}
-nav button.on{background:var(--em);color:#fff}
-main{max-width:1080px;margin:auto;padding:16px}.page{display:none}.page.on{display:block}
-.hero{background:linear-gradient(135deg,var(--em),var(--emd));color:#fff;border-radius:20px;padding:24px;box-shadow:0 8px 24px #046a3822}
-.hero .big{font-size:42px;font-weight:800;margin:6px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
-.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px #0001}.card h3{margin:.2em 0;color:var(--emd)}
-.up{color:var(--up)} .dn{color:var(--dn)} .mut{color:var(--mut);font-size:13px}
-table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid #eee;text-align:left}th{color:var(--emd)}
-button.act{background:var(--gold);border:0;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer}
-input{width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;margin:4px 0 10px}
-canvas{width:100%;height:150px;background:#fff;border-radius:12px}
-.badge{background:#e8f5e9;color:var(--up);padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
-.err{background:#ffebee;color:var(--dn);padding:12px;border-radius:12px}
-footer{text-align:center;color:#889;padding:20px;font-size:13px}
+:root{--bg:#F4F7FC;--card:#FFFFFF;--blue:#4776F5;--turq:#16C9B2;--violet:#9270F5;--epurp:#7457E8;--green:#18B981;--coral:#F36B7F;--gold:#F5BD55;--ink:#263247;--mut:#8793A5}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid #E6EBF5;padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9;box-shadow:0 4px 20px rgba(71,118,245,.06)}
+header img{width:46px;height:46px;border-radius:14px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.12)}header h1{font-size:19px;color:var(--ink);margin:0;letter-spacing:.2px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}nav button{border:1.5px solid #E1E8F5;background:#fff;color:var(--mut);padding:9px 15px;border-radius:999px;cursor:pointer;font-weight:700;transition:.2s}
+nav button:hover{transform:translateY(-1px);border-color:var(--blue);color:var(--blue)}nav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(116,87,232,.35)}
+main{max-width:1080px;margin:auto;padding:16px}.page{display:none;animation:fade .3s ease}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.hero{background:linear-gradient(135deg,var(--blue),var(--violet) 55%,var(--epurp));color:#fff;border-radius:24px;padding:26px;box-shadow:0 16px 36px rgba(116,87,232,.35)}
+.hero .big{font-size:44px;font-weight:800;margin:6px 0;letter-spacing:.3px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid #E8EEF9;border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(38,50,71,.06)}
+.card h3{margin:.2em 0;color:var(--ink)}
+.g-blue{background:linear-gradient(135deg,#EEF3FF,#E3EBFF)} .g-green{background:linear-gradient(135deg,var(--green),#0ED6A5);color:#fff}.g-coral{background:linear-gradient(135deg,var(--coral),#FF9A8A);color:#fff}
+.g-btc{background:linear-gradient(135deg,#FFF3E0,#FFE3B3)} .g-bnb{background:linear-gradient(135deg,#FFF8E1,#FBE9B7)} .g-xrp{background:linear-gradient(135deg,#E3F2FD,#CDEBFF)} .g-usdt{background:linear-gradient(135deg,var(--turq),#4FE3D2);color:#fff}
+.coin{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;font-weight:800;color:#fff;margin-right:8px;vertical-align:middle}
+.c-BTC{background:linear-gradient(135deg,#F5A623,var(--gold))}.c-BNB{background:linear-gradient(135deg,#E3B341,var(--gold));color:#7A5A00}.c-XRP{background:linear-gradient(135deg,#4FA8E0,var(--blue))}.c-USDT{background:linear-gradient(135deg,#0FB9A8,var(--turq))}
+.up{color:var(--green)} .dn{color:var(--coral)} .mut{color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid #EFF3FA;text-align:left}th{color:var(--ink)}
+button.act{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(116,87,232,.3);transition:.2s}button.act:hover{transform:translateY(-2px)}button.act:active{transform:scale(.98)}
+button.ghost{background:#fff;border:1.5px solid #E1E8F5;color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer}
+input{width:100%;padding:11px;border:1.5px solid #E1E8F5;border-radius:12px;margin:4px 0 10px;background:#FBFCFF}input:focus{outline:2px solid var(--blue);border-color:transparent}
+canvas{width:100%;height:150px;background:linear-gradient(180deg,#F0F5FF,#fff);border-radius:16px}
+.badge{background:#E6FBF3;color:#0B8A5F;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.err{background:#FFEDEE;color:#C93A4B;padding:12px;border-radius:14px}
+footer{text-align:center;color:var(--mut);padding:20px;font-size:13px}
+.allocbar{height:10px;border-radius:99px;background:#EDF1F9;overflow:hidden}.allocbar>div{height:10px;border-radius:99px}
 </style></head><body>
 <header><img src="/static/logo.png" alt="logo"><h1>Tawfiq CryptoSignal</h1>
 <nav><button data-p="dash" class="on">Dashboard</button><button data-p="port">My Portfolio</button><button data-p="mkt">Market Highlights</button><button data-p="chart">Charts</button><button data-p="set">Settings</button></nav></header>
@@ -29,9 +36,9 @@ footer{text-align:center;color:#889;padding:20px;font-size:13px}
  <div class="hero"><div>Total Portfolio Value (incl. $200 USDT reserve)</div><div class="big" id="total">—</div>
  <div id="heroSub">Initial (28 Oct 2026): $1,200.00</div><div id="hero24" class="mut" style="color:#d7ecd7"></div></div>
  <div class="grid"><div class="card"><h3>Crypto invested $1,000 → now</h3><div id="cryptoV" style="font-size:24px;font-weight:700">—</div><div id="cryptoP"></div></div>
- <div class="card"><h3>Emergency reserve (USDT)</h3><div style="font-size:24px;font-weight:700">$200.00</div><div class="mut">Separate — excluded from crypto return</div></div>
- <div class="card"><h3>Best performer</h3><div id="best" style="font-size:22px;font-weight:700">—</div></div>
- <div class="card"><h3>Worst performer</h3><div id="worst" style="font-size:22px;font-weight:700">—</div></div></div>
+ <div class="card g-usdt"><h3 style='color:#fff'>Emergency reserve (USDT)</h3><div style="font-size:24px;font-weight:700">$200.00</div><div class="mut">Separate — excluded from crypto return</div></div>
+ <div class="card g-blue"><h3>Best performer</h3><div id="best" style="font-size:22px;font-weight:700">—</div></div>
+ <div class="card g-blue"><h3>Worst performer</h3><div id="worst" style="font-size:22px;font-weight:700">—</div></div></div>
  <div class="grid" id="dashCards"></div>
  <p class="mut">Estimates = live public prices × stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.</p>
  <button class="act" onclick="refresh()">↻ Refresh live prices</button>
@@ -74,10 +81,11 @@ function render(){const a=assets();const tot=a.reduce((x,y)=>x+y.val,0);const in
  $('status').innerHTML='<span class="badge">● LIVE</span> Source: '+src+' • Updated: '+new Date(last).toLocaleString();
  $('dashCards').innerHTML=a.map(card).join(''); $('portCards').innerHTML=a.map(card).join('');
  $('portSum').innerHTML='Total invested: <b>'+usd(init)+'</b> (Crypto $1,000 + Reserve $200)<br>Current: <b>'+usd(tot)+'</b> • P/L <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b><br>Crypto-only: <b class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</b>';
- $('alloc').innerHTML=a.map(x=>'<div>'+x.s+': '+(tot?(x.val/tot*100).toFixed(1):0)+'% ('+usd(x.val)+')<div style="background:#eee;height:10px;border-radius:99px"><div style="height:10px;border-radius:99px;background:var(--em);width:'+(tot?x.val/tot*100:0)+'%"></div></div></div>').join('');
+ $('alloc').innerHTML=a.map(x=>'<div>'+x.s+': '+(tot?(x.val/tot*100).toFixed(1):0)+'% ('+usd(x.val)+')<div style="background:#eee;height:10px;border-radius:99px"><div style="height:10px;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--turq));width:'+(tot?x.val/tot*100:0)+'%"></div></div></div>').join('');
  $('apiStat').textContent='API status: Live • Source: '+src+' • Last sync: '+new Date(last).toLocaleString();
 }
-function card(x){return '<div class="card"><h3>'+x.s+' — '+x.h.name+'</h3><div style="font-size:22px;font-weight:800">'+usd(x.val)+'</div><div class="mut">Qty '+x.h.qty+' • Bought @ '+usd(x.h.buy)+' (invested '+usd(x.h.inv)+')</div>'+(x.h.reserve?'<div style="color:var(--gold)">Emergency reserve — separate</div>':(x.q?'<div>Now '+usd(x.price)+' • 24h <span class="'+cls(x.q.change24hPct)+'">'+pct(x.q.change24hPct)+'</span> • H '+usd(x.q.high24h)+' / L '+usd(x.q.low24h)+'</div><div class="'+cls(x.pnl)+'"><b>My P/L since purchase: '+usd(x.pnl)+' ('+pct(x.pnlPct)+')</b></div><div class="mut">Source: '+(x.q.source||'Backend')+'</div>':'<div class="mut">Waiting for price…</div>'))+'</div>'}
+const GC={BTC:'g-btc',BNB:'g-bnb',XRP:'g-xrp',USDT:'g-usdt'};
+function card(x){return '<div class="card '+GC[x.s]+'"><h3><span class="coin c-'+x.s+'">'+x.s[0]+'</span>'+x.s+' — '+x.h.name+'</h3><div style="font-size:22px;font-weight:800">'+usd(x.val)+'</div><div class="mut">Qty '+x.h.qty+' • Bought @ '+usd(x.h.buy)+' (invested '+usd(x.h.inv)+')</div>'+(x.h.reserve?'<div style="color:var(--gold)">Emergency reserve — separate</div>':(x.q?'<div>Now '+usd(x.price)+' • 24h <span class="'+cls(x.q.change24hPct)+'">'+pct(x.q.change24hPct)+'</span> • H '+usd(x.q.high24h)+' / L '+usd(x.q.low24h)+'</div><div class="'+cls(x.pnl)+'"><b>My P/L since purchase: '+usd(x.pnl)+' ('+pct(x.pnlPct)+')</b></div><div class="mut">Source: '+(x.q.source||'Backend')+'</div>':'<div class="mut">Waiting for price…</div>'))+'</div>'}
 function row(m){const u=(m.price_change_percentage_24h||0)>=0;return '<div class="card" style="margin:6px 0"><b>'+(m.symbol||'').toUpperCase()+' — '+m.name+'</b> <span style="float:right"><b>'+usd(m.current_price||0)+'</b> <span class="'+cls(m.price_change_percentage_24h||0)+'">'+pct(m.price_change_percentage_24h||0)+'</span></span><div class="mut">Vol '+usd(m.total_volume||0)+' • H '+usd(m.high_24h||0)+' / L '+usd(m.low_24h||0)+'</div></div>'}
 function renderMarket(){const q=($('q').value||'').toLowerCase();const f=MKT.filter(m=>!q||(m.name||'').toLowerCase().includes(q)||(m.symbol||'').includes(q));
  const s=[...MKT].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
