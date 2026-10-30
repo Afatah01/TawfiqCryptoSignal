@@ -9,6 +9,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -283,14 +284,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable fun AboutScreen() {
-    LazyColumn { item { Card(Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(24.dp)) { Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(140.dp).clip(RoundedCornerShape(20.dp)))
-        Text("TAWFIQ CRYPTOSIGNAL", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
-        Text("TRACK • ALERT • GROW", color = Gold, fontWeight = FontWeight.Bold)
-        Text("AI-powered cryptocurrency market monitoring and portfolio intelligence.", Modifier.padding(top = 8.dp))
-        Text("Live data: Binance (primary, real-time) via secure backend. CoinGecko emergency fallback only. AI: RSI/MACD/EMA/Bollinger engine + OpenAI when configured (server-side). Portfolio: $1,200 fixed baseline, 28 October 2026. Monitoring & education only — no trading, no transfers, no Binance login.", color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
-        Text("Disclaimer: Crypto is volatile. AI analysis is interpretation, not financial advice or a guarantee.", color = Muted, style = MaterialTheme.typography.bodySmall)
-    } } } }
+    LazyColumn {
+        item { Card(Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(26.dp), elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) { Column(Modifier.padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(painterResource(R.drawable.profile_photo), "Abdifatah Elmi Muhumed", Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(22.dp)).border(3.dp, Gold, RoundedCornerShape(22.dp)), contentScale = androidx.compose.ui.layout.ContentScale.Crop)
+            Text("POWERED BY", color = ProfitGreen, fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 16.dp))
+            Text("Abdifatah Elmi Muhumed", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.headlineSmall, color = Ink)
+            Box(Modifier.padding(vertical = 10.dp).width(64.dp).height(4.dp).clip(RoundedCornerShape(99.dp)).background(Brush.horizontalGradient(listOf(ProfitGreen, Gold))))
+            Text("Tawfiq CryptoSignal is our personal cryptocurrency monitoring and investment analysis platform. We use this application to monitor our cryptocurrency portfolio, track market movements, follow investment performance, and receive real-time alerts when prices increase or decline.", style = MaterialTheme.typography.bodyMedium)
+            Text("Our goal is to understand how our investments are performing and use reliable market information, portfolio analysis, and price signals to support informed trading and investment decisions. We monitor Bitcoin (BTC), BNB, XRP, and other important cryptocurrencies through integrated cryptocurrency market APIs, including Binance and other supported platforms.", color = Muted, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 8.dp))
+        } } }
+        item { Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(22.dp)) { Column(Modifier.padding(20.dp)) {
+            Text("🎯 Our Purpose", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+            listOf("Monitor our personal cryptocurrency portfolio.", "Track investment growth and decline.", "Receive real-time cryptocurrency price alerts.", "Analyse market movements and trends.", "Review portfolio performance and potential risks.", "Use market information and analysis to support our own trading decisions.").forEach {
+                Row(Modifier.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(22.dp).clip(CircleShape).background(Brush.linearGradient(listOf(ProfitGreen, Turquoise))), contentAlignment = Alignment.Center) { Text("✓", color = Color.White, fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.labelSmall) }
+                    Text(it, Modifier.padding(start = 10.dp), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        } } }
+        item { Card(Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(24.dp)) { Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(120.dp).clip(RoundedCornerShape(20.dp)))
+            Text("TAWFIQ CRYPTOSIGNAL", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
+            Text("TRACK • ALERT • GROW", color = Gold, fontWeight = FontWeight.Bold)
+            Text("Live data: Binance (primary, real-time) via secure backend. CoinGecko emergency fallback only. Portfolio: $1,200 fixed baseline, 28 October 2026. Monitoring & education only — no trading, no transfers, no Binance login.", color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
+            Text("Disclaimer: Crypto is volatile. AI analysis is interpretation, not financial advice or a guarantee.", color = Muted, style = MaterialTheme.typography.bodySmall)
+            Text("Powered by: Abdifatah Elmi Muhumed", color = ProfitGreen, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
+        } } }
+    }
 }
 
 @Composable fun SettingsScreen(vm: MainViewModel, state: PortfolioState) {

@@ -57,6 +57,15 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#EFF5FF,#FFFFFF
  nav.mainnav button{flex:1 1 30%;text-align:center;padding:11px 5px;font-size:13.5px;border:1.5px solid var(--bd);background:#fff;white-space:nowrap}
  nav.mainnav button.on{border-color:transparent}
 }
+
+.about-hero{display:grid;grid-template-columns:340px 1fr;gap:26px;align-items:center;background:linear-gradient(135deg,#FFFFFF,#EFFBF6);border:1px solid #D9F2E6;border-radius:26px;padding:28px;box-shadow:0 18px 44px rgba(24,185,129,.13)}
+.about-photo{width:100%;max-width:320px;aspect-ratio:4/5;object-fit:cover;border-radius:24px;border:4px solid #fff;box-shadow:0 16px 36px rgba(38,50,71,.22);outline:2px solid var(--gold)}
+.about-name{font-size:15px;font-weight:800;letter-spacing:.6px;color:#0B8A5F;text-transform:uppercase}
+.about-role{font-size:30px;margin:4px 0 8px}
+.goldline{width:64px;height:4px;border-radius:99px;background:linear-gradient(90deg,#18B981,var(--gold));margin:10px 0 14px}
+.purpose{list-style:none;padding:0;margin:10px 0}.purpose li{padding:9px 0 9px 34px;position:relative;border-bottom:1px solid #EFF6F1}
+.purpose li::before{content:'✓';position:absolute;left:0;top:7px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#18B981,#16C9B2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+@media(max-width:760px){.about-hero{grid-template-columns:1fr;text-align:center;padding:22px}.about-photo{margin:auto}.goldline{margin:10px auto 14px}.purpose li{text-align:left}}
 </style></head><body>
 <header>
 <div class="masthead">
@@ -117,14 +126,31 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#EFF5FF,#FFFFFF
 <div class="card"><h3>ℹ️ Application information</h3><div id="apiStat" class="mut"></div>
 <p class="mut">OpenAI: add <b>OPENAI_API_KEY</b> in Render → your service → Environment to upgrade AI narratives &amp; chat to OpenAI. Without it, the built-in Binance-indicator engine still works. A ChatGPT subscription does <b>not</b> include API credits — OpenAI API is billed separately by OpenAI.</p></div></section>
 
-<section id="about" class="page"><div class="card" style="text-align:center;padding:34px">
-<img src="/static/logo.png" style="width:150px;border-radius:24px" alt="logo"><h1 style="margin:8px">TAWFIQ CRYPTOSIGNAL</h1>
-<div style="letter-spacing:3px;color:var(--gold);font-weight:800">TRACK • ALERT • GROW</div>
-<p><b>AI-powered cryptocurrency market monitoring and portfolio intelligence.</b></p>
-<p class="mut">Live data: Binance (primary, real-time) via this secure backend · CoinGecko emergency fallback only.<br>
-AI: Tawfiq AI Engine (RSI, MACD, EMA, Bollinger, volume &amp; momentum) + OpenAI when configured — server-side only, keys never in the app.<br>
-Portfolio: $1,200 fixed baseline from 28 October 2026. Monitoring &amp; education only — no trading, no transfers, no Binance login.</p>
-<p class="mut"><b>Disclaimer:</b> Cryptocurrency is volatile. AI analysis is interpretation of market data, not financial advice and never a guarantee. Verify important decisions independently.</p></div></section>
+<section id="about" class="page">
+<div class="about-hero">
+<div><img class="about-photo" src="/static/profile.png" alt="Abdifatah Elmi Muhumed — Founder, Tawfiq CryptoSignal"></div>
+<div>
+<div class="about-name">Powered by</div>
+<div class="about-role" style="font-family:Manrope;font-weight:800">Abdifatah Elmi Muhumed</div>
+<div class="goldline"></div>
+<p style="line-height:1.75;margin:0">Tawfiq CryptoSignal is our <b>personal cryptocurrency monitoring and investment analysis platform</b>. We use this application to monitor our cryptocurrency portfolio, track market movements, follow investment performance, and receive <b>real-time alerts</b> when prices increase or decline.</p>
+<p style="line-height:1.75" class="mut">Our goal is to understand how our investments are performing and use reliable market information, portfolio analysis, and price signals to support informed trading and investment decisions. We monitor <b>Bitcoin (BTC), BNB, XRP</b>, and other important cryptocurrencies through integrated cryptocurrency market APIs, including <b>Binance</b> and other supported platforms.</p>
+<span class="badge">● Live Binance Data</span> <span class="badge" style="background:#FFF4D6;color:#8A6400">✦ TRACK • ALERT • GROW</span>
+</div></div>
+<div class="grid">
+<div class="card"><h3>🎯 Our Purpose</h3><ul class="purpose">
+<li>Monitor our personal cryptocurrency portfolio.</li>
+<li>Track investment growth and decline.</li>
+<li>Receive real-time cryptocurrency price alerts.</li>
+<li>Analyse market movements and trends.</li>
+<li>Review portfolio performance and potential risks.</li>
+<li>Use market information and analysis to support our own trading decisions.</li></ul></div>
+<div class="card" style="text-align:center"><img src="/static/logo.png" style="width:130px" alt="Tawfiq CryptoSignal logo"><h3 style="margin-bottom:2px">TAWFIQ CRYPTOSIGNAL</h3>
+<div style="letter-spacing:3px;color:#C79A2E;font-weight:800;font-size:12px">TRACK • ALERT • GROW</div>
+<p class="mut">Live data: <b>Binance</b> (primary, real-time) via secure backend · CoinGecko emergency fallback only.<br>AI: Tawfiq AI Engine (RSI, MACD, EMA, Bollinger, volume &amp; momentum) + OpenAI when configured — server-side only.<br>Portfolio: $1,200 fixed baseline · 28 October 2026 · Monitoring &amp; education only — no trading, no transfers, no Binance login.</p>
+<p class="mut"><b>Disclaimer:</b> Cryptocurrency is volatile. AI analysis interprets market data — it is not financial advice and never a guarantee. Verify important decisions independently.</p>
+<p style="font-weight:700">Powered by: <span style="color:#0B8A5F">Abdifatah Elmi Muhumed</span></p></div>
+</div></section>
 </main><div class="foot">Tawfiq CryptoSignal — TRACK • ALERT • GROW · Powered by: <b>Abdifatah Elmi Muhumed</b> · Analysis only, not financial advice.</div>
 <script>
 const H={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};
