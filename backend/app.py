@@ -5,17 +5,24 @@ Endpoints: GET /health | GET /api/prices | GET /api/market | GET /api/ticker/{sy
 import os, time, httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os as _os
 BINANCE="https://data-api.binance.vision"  # public market-data host
 GECKO="https://api.coingecko.com"
 SYMBOLS=["BTC","BNB","XRP"]
 GECKO_IDS={"BTC":"bitcoin","BNB":"binancecoin","XRP":"ripple","ETH":"ethereum","SOL":"solana","DOGE":"dogecoin","USDT":"tether","USDC":"usd-coin"}
 app=FastAPI(title="Tawfiq CryptoSignal API", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"])
+_static=_os.path.join(_os.path.dirname(__file__),"static")
+if _os.path.isdir(_static): app.mount("/static", StaticFiles(directory=_static), name="static")
 _cache={"prices":(0,None),"market":(0,None)}
 def fresh(key,ttl=20):
     t,v=_cache.get(key,(0,None)); return v if v and time.time()-t<ttl else None
+@app.get("/api")
+def api_home(): return {"service":"Tawfiq CryptoSignal API","status":"live","docs":"/docs","endpoints":["/health","/api/prices","/api/market","/api/ticker/BTC"]}
 @app.get("/")
-def home(): return {"service":"Tawfiq CryptoSignal API","status":"live","docs":"/docs","endpoints":["/health","/api/prices","/api/market","/api/ticker/BTC"]}
+def home(): return FileResponse(_os.path.join(_os.path.dirname(__file__),"static","index.html"))
 @app.get("/health")
 def health(): return {"status":"ok","service":"tawfiq-cryptosignal","ts":int(time.time()*1000)}
 @app.get("/api/ticker/{symbol}")

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tawfiq CryptoSignal — Live Portfolio</title><link rel="icon" href="/static/logo.png">
+<style>
+:root{--em:#046A38;--emd:#034D29;--gold:#C9A227;--bg:#F7FAF7;--up:#0A8A44;--dn:#C62828;--mut:#667}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#122}
+header{background:#fff;border-bottom:3px solid var(--gold);padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9}
+header img{width:44px;height:44px;border-radius:10px;object-fit:cover}header h1{font-size:19px;color:var(--emd);margin:0}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}nav button{border:1px solid var(--em);background:#fff;color:var(--em);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600}
+nav button.on{background:var(--em);color:#fff}
+main{max-width:1080px;margin:auto;padding:16px}.page{display:none}.page.on{display:block}
+.hero{background:linear-gradient(135deg,var(--em),var(--emd));color:#fff;border-radius:20px;padding:24px;box-shadow:0 8px 24px #046a3822}
+.hero .big{font-size:42px;font-weight:800;margin:6px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px #0001}.card h3{margin:.2em 0;color:var(--emd)}
+.up{color:var(--up)} .dn{color:var(--dn)} .mut{color:var(--mut);font-size:13px}
+table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid #eee;text-align:left}th{color:var(--emd)}
+button.act{background:var(--gold);border:0;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer}
+input{width:100%;padding:9px;border:1px solid #ccc;border-radius:8px;margin:4px 0 10px}
+canvas{width:100%;height:150px;background:#fff;border-radius:12px}
+.badge{background:#e8f5e9;color:var(--up);padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.err{background:#ffebee;color:var(--dn);padding:12px;border-radius:12px}
+footer{text-align:center;color:#889;padding:20px;font-size:13px}
+</style></head><body>
+<header><img src="/static/logo.png" alt="logo"><h1>Tawfiq CryptoSignal</h1>
+<nav><button data-p="dash" class="on">Dashboard</button><button data-p="port">My Portfolio</button><button data-p="mkt">Market Highlights</button><button data-p="chart">Charts</button><button data-p="set">Settings</button></nav></header>
+<main>
+<section id="dash" class="page on">
+ <div id="status" class="mut">Loading live prices…</div>
+ <div class="hero"><div>Total Portfolio Value (incl. $200 USDT reserve)</div><div class="big" id="total">—</div>
+ <div id="heroSub">Initial (28 Oct 2026): $1,200.00</div><div id="hero24" class="mut" style="color:#d7ecd7"></div></div>
+ <div class="grid"><div class="card"><h3>Crypto invested $1,000 → now</h3><div id="cryptoV" style="font-size:24px;font-weight:700">—</div><div id="cryptoP"></div></div>
+ <div class="card"><h3>Emergency reserve (USDT)</h3><div style="font-size:24px;font-weight:700">$200.00</div><div class="mut">Separate — excluded from crypto return</div></div>
+ <div class="card"><h3>Best performer</h3><div id="best" style="font-size:22px;font-weight:700">—</div></div>
+ <div class="card"><h3>Worst performer</h3><div id="worst" style="font-size:22px;font-weight:700">—</div></div></div>
+ <div class="grid" id="dashCards"></div>
+ <p class="mut">Estimates = live public prices × stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.</p>
+ <button class="act" onclick="refresh()">↻ Refresh live prices</button>
+</section>
+<section id="port" class="page"><h2 style="color:var(--emd)">My Portfolio — baseline 28 Oct 2026</h2><div id="portSum" class="card"></div><div class="grid" id="portCards"></div></section>
+<section id="mkt" class="page"><h2 style="color:var(--emd)">Market Highlights <span class="mut">(market-wide, not your portfolio)</span></h2>
+<input id="q" placeholder="Search coins e.g. ETH, SOL..." oninput="renderMarket()"><div id="mktErr"></div>
+<h3 class="up">🚀 Biggest gainers (24h)</h3><div id="gainers"></div><h3 class="dn">📉 Biggest losers (24h)</h3><div id="losers"></div><h3>All coins</h3><div id="allCoins"></div></section>
+<section id="chart" class="page"><h2 style="color:var(--emd)">Portfolio Charts</h2>
+<p class="mut">Built from snapshots this browser records while the page refreshes (also saved in your browser). No invented history.</p>
+<div class="card"><h3>Total portfolio value</h3><canvas id="ch1" width="900" height="220"></canvas></div>
+<div class="card"><h3>Asset allocation now</h3><div id="alloc"></div></div></section>
+<section id="set" class="page"><h2 style="color:var(--emd)">Settings</h2><div class="card"><h3>Edit holdings (saved in this browser)</h3><div id="edit"></div>
+<button class="act" onclick="saveHoldings()">Save holdings</button> <button onclick="resetHoldings()">Reset to 28 Oct 2026 baseline</button>
+<p class="mut">Original baseline: BTC 0.006198 @ $80,642.26 ($500) · BNB 0.398894 @ $752.08 ($300) · XRP 151.52 @ $1.32 ($200) · USDT 200 @ $1.00 ($200 reserve). Invested $ auto = qty × purchase price.</p></div>
+<div class="card"><h3>About</h3><p class="mut">Data: Binance primary via this Render backend, CoinGecko market highlights. No login, no keys, no trading. Alerts run in the Android app (background ~15 min); this web page alerts visually while open.</p><div id="apiStat"></div></div></section>
+</main><footer>Tawfiq CryptoSignal — TRACK • ALERT • GROW · Monitoring/education only, not financial advice.</footer>
+<script>
+const DEF={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};
+let H=JSON.parse(localStorage.getItem('tcs_hold')||'null')||structuredClone(DEF);
+let Q={},MKT=[],last=0,src='';
+const $=id=>document.getElementById(id), usd=v=>(v<0?'-$':'$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
+const cls=v=>v>=0?'up':'dn';
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));$(b.dataset.p).classList.add('on'); if(b.dataset.p==='chart')draw()});
+function assets(){return Object.entries(H).map(([s,h])=>{const q=Q[s];const price=q?q.price:h.buy;const val=price*h.qty;const pnl=val-h.inv;return{s,h,price,val,pnl,pnlPct:h.inv?pnl/h.inv*100:0,q}})}
+function snap(){const a=assets();const t=a.reduce((x,y)=>x+y.val,0);let arr=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');if(!arr.length||Date.now()-arr[arr.length-1].ts>60000){arr.push({ts:Date.now(),total:t});localStorage.setItem('tcs_snaps',JSON.stringify(arr.slice(-300))) } }
+async function refresh(){ $('status').textContent='Loading live prices…';
+ try{const r=await fetch('/api/prices'); Q=await r.json(); last=Date.now(); src='Binance via Render backend'; render(); snap(); draw()}
+ catch(e){ $('status').innerHTML='<span class="err">⚠ Could not load prices: '+e.message+' — retrying automatically.</span>'}
+ try{const r=await fetch('/api/market'); MKT=await r.json(); renderMarket()}catch(e){}}
+function render(){const a=assets();const tot=a.reduce((x,y)=>x+y.val,0);const init=a.reduce((x,y)=>x+y.h.inv,0);const pnl=tot-init;
+ const cry=a.filter(x=>!x.h.reserve), cv=cry.reduce((x,y)=>x+y.val,0), ci=cry.reduce((x,y)=>x+y.h.inv,0);
+ const ch24=a.reduce((x,y)=>x+((y.q?y.q.change24hUsd:0)*y.h.qty),0);
+ $('total').textContent=usd(tot);
+ $('heroSub').innerHTML='Initial (28 Oct 2026): '+usd(init)+' • Since purchase: <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b>';
+ $('hero24').textContent='24h market change (not since-purchase): '+usd(ch24);
+ $('cryptoV').textContent=usd(cv); $('cryptoP').innerHTML='<span class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</span>';
+ const by=[...cry].sort((x,y)=>y.pnlPct-x.pnlPct); $('best').innerHTML=by.length?by[0].s+' <span class="'+cls(by[0].pnlPct)+'">'+pct(by[0].pnlPct)+'</span>':'—';
+ $('worst').innerHTML=by.length?by[by.length-1].s+' <span class="'+cls(by[by.length-1].pnlPct)+'">'+pct(by[by.length-1].pnlPct)+'</span>':'—';
+ $('status').innerHTML='<span class="badge">● LIVE</span> Source: '+src+' • Updated: '+new Date(last).toLocaleString();
+ $('dashCards').innerHTML=a.map(card).join(''); $('portCards').innerHTML=a.map(card).join('');
+ $('portSum').innerHTML='Total invested: <b>'+usd(init)+'</b> (Crypto $1,000 + Reserve $200)<br>Current: <b>'+usd(tot)+'</b> • P/L <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b><br>Crypto-only: <b class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</b>';
+ $('alloc').innerHTML=a.map(x=>'<div>'+x.s+': '+(tot?(x.val/tot*100).toFixed(1):0)+'% ('+usd(x.val)+')<div style="background:#eee;height:10px;border-radius:99px"><div style="height:10px;border-radius:99px;background:var(--em);width:'+(tot?x.val/tot*100:0)+'%"></div></div></div>').join('');
+ $('apiStat').textContent='API status: Live • Source: '+src+' • Last sync: '+new Date(last).toLocaleString();
+}
+function card(x){return '<div class="card"><h3>'+x.s+' — '+x.h.name+'</h3><div style="font-size:22px;font-weight:800">'+usd(x.val)+'</div><div class="mut">Qty '+x.h.qty+' • Bought @ '+usd(x.h.buy)+' (invested '+usd(x.h.inv)+')</div>'+(x.h.reserve?'<div style="color:var(--gold)">Emergency reserve — separate</div>':(x.q?'<div>Now '+usd(x.price)+' • 24h <span class="'+cls(x.q.change24hPct)+'">'+pct(x.q.change24hPct)+'</span> • H '+usd(x.q.high24h)+' / L '+usd(x.q.low24h)+'</div><div class="'+cls(x.pnl)+'"><b>My P/L since purchase: '+usd(x.pnl)+' ('+pct(x.pnlPct)+')</b></div><div class="mut">Source: '+(x.q.source||'Backend')+'</div>':'<div class="mut">Waiting for price…</div>'))+'</div>'}
+function row(m){const u=(m.price_change_percentage_24h||0)>=0;return '<div class="card" style="margin:6px 0"><b>'+(m.symbol||'').toUpperCase()+' — '+m.name+'</b> <span style="float:right"><b>'+usd(m.current_price||0)+'</b> <span class="'+cls(m.price_change_percentage_24h||0)+'">'+pct(m.price_change_percentage_24h||0)+'</span></span><div class="mut">Vol '+usd(m.total_volume||0)+' • H '+usd(m.high_24h||0)+' / L '+usd(m.low_24h||0)+'</div></div>'}
+function renderMarket(){const q=($('q').value||'').toLowerCase();const f=MKT.filter(m=>!q||(m.name||'').toLowerCase().includes(q)||(m.symbol||'').includes(q));
+ const s=[...MKT].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
+ $('gainers').innerHTML=s.slice(0,3).map(row).join('')||'<p class="mut">Loading…</p>'; $('losers').innerHTML=s.slice(-3).reverse().map(row).join('');
+ $('allCoins').innerHTML=f.map(row).join('')||'<p class="mut">No market data yet.</p>'}
+function draw(){const c=$('ch1');if(!c)return;const x=c.getContext('2d');const arr=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');x.clearRect(0,0,c.width,c.height);
+ if(arr.length<2){x.fillStyle='#888';x.font='16px sans-serif';x.fillText('Not enough snapshots yet — keep this page open, it records every minute.',20,40);return}
+ const vs=arr.map(a=>a.total),mn=Math.min(...vs),mx=Math.max(...vs),rg=(mx-mn)||1;x.strokeStyle='#046A38';x.lineWidth=2.5;x.beginPath();
+ arr.forEach((a,i)=>{const px=i/(arr.length-1)*880+10,py=190-((a.total-mn)/rg)*160;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
+ x.fillStyle='#667';x.fillText('Min '+usd(mn),10,215);x.fillText('Max '+usd(mx),800,215)}
+function editForm(){$('edit').innerHTML=Object.entries(H).map(([s,h])=>'<div style="border-bottom:1px solid #eee;padding:8px 0"><b>'+s+' — '+h.name+'</b><label class="mut">Quantity</label><input id="q_'+s+'" type="number" step="any" value="'+h.qty+'"><label class="mut">Purchase price USD</label><input id="p_'+s+'" type="number" step="any" value="'+h.buy+'"></div>').join('')}
+function saveHoldings(){Object.keys(H).forEach(s=>{const q=parseFloat($('q_'+s).value),p=parseFloat($('p_'+s).value);if(!isNaN(q)&&!isNaN(p)){H[s].qty=q;H[s].buy=p;H[s].inv=q*p}});localStorage.setItem('tcs_hold',JSON.stringify(H));refresh();alert('Saved in this browser.')}
+function resetHoldings(){H=structuredClone(DEF);localStorage.setItem('tcs_hold',JSON.stringify(H));editForm();refresh()}
+editForm(); refresh(); setInterval(refresh,30000);
+</script></body></html>
