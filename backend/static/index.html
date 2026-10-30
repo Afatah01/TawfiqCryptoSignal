@@ -58,14 +58,13 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#EFF5FF,#FFFFFF
  nav.mainnav button.on{border-color:transparent}
 }
 
-.about-hero{display:grid;grid-template-columns:340px 1fr;gap:26px;align-items:center;background:linear-gradient(135deg,#FFFFFF,#EFFBF6);border:1px solid #D9F2E6;border-radius:26px;padding:28px;box-shadow:0 18px 44px rgba(24,185,129,.13)}
-.about-photo{width:100%;max-width:320px;aspect-ratio:4/5;object-fit:cover;border-radius:24px;border:4px solid #fff;box-shadow:0 16px 36px rgba(38,50,71,.22);outline:2px solid var(--gold)}
+.about-hero{display:block;max-width:860px;margin:auto;background:linear-gradient(135deg,#FFFFFF,#EFFBF6);border:1px solid #D9F2E6;border-radius:26px;padding:28px;box-shadow:0 18px 44px rgba(24,185,129,.13)}
 .about-name{font-size:15px;font-weight:800;letter-spacing:.6px;color:#0B8A5F;text-transform:uppercase}
 .about-role{font-size:30px;margin:4px 0 8px}
 .goldline{width:64px;height:4px;border-radius:99px;background:linear-gradient(90deg,#18B981,var(--gold));margin:10px 0 14px}
 .purpose{list-style:none;padding:0;margin:10px 0}.purpose li{padding:9px 0 9px 34px;position:relative;border-bottom:1px solid #EFF6F1}
 .purpose li::before{content:'✓';position:absolute;left:0;top:7px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#18B981,#16C9B2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
-@media(max-width:760px){.about-hero{grid-template-columns:1fr;text-align:center;padding:22px}.about-photo{margin:auto}.goldline{margin:10px auto 14px}.purpose li{text-align:left}}
+@media(max-width:760px){.about-hero{text-align:center;padding:22px}.goldline{margin:10px auto 14px}.purpose li{text-align:left}}
 </style></head><body>
 <header>
 <div class="masthead">
@@ -128,7 +127,6 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#EFF5FF,#FFFFFF
 
 <section id="about" class="page">
 <div class="about-hero">
-<div><img class="about-photo" src="/static/profile.png" alt="Abdifatah Elmi Muhumed — Founder, Tawfiq CryptoSignal"></div>
 <div>
 <div class="about-name">Powered by</div>
 <div class="about-role" style="font-family:Manrope;font-weight:800">Abdifatah Elmi Muhumed</div>

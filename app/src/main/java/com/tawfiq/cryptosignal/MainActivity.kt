@@ -286,7 +286,6 @@ class MainActivity : ComponentActivity() {
 @Composable fun AboutScreen() {
     LazyColumn {
         item { Card(Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(26.dp), elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) { Column(Modifier.padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(painterResource(R.drawable.profile_photo), "Abdifatah Elmi Muhumed", Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(22.dp)).border(3.dp, Gold, RoundedCornerShape(22.dp)), contentScale = androidx.compose.ui.layout.ContentScale.Crop)
             Text("POWERED BY", color = UpGreen, fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(top = 16.dp))
             Text("Abdifatah Elmi Muhumed", fontWeight = FontWeight.ExtraBold, style = MaterialTheme.typography.headlineSmall, color = EmeraldDark)
             Box(Modifier.padding(vertical = 10.dp).width(64.dp).height(4.dp).clip(RoundedCornerShape(99.dp)).background(Brush.horizontalGradient(listOf(UpGreen, Gold))))
