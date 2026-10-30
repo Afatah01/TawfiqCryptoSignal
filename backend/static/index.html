@@ -5,25 +5,25 @@
 <style>
 :root{--bg:#F4F7FC;--card:#FFFFFF;--blue:#4776F5;--eblue:#3987FF;--turq:#16C9B2;--violet:#9270F5;--epurp:#7457E8;--green:#18B981;--coral:#F36B7F;--gold:#F5BD55;--ink:#263247;--mut:#8793A5;--bd:#E8EDF5}
 *{box-sizing:border-box}body{margin:0;font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:20;box-shadow:0 6px 24px rgba(71,118,245,.07)}
-.brandbar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:20px;padding:18px 18px 10px}
-.brandbar img.logo{width:122px;height:122px;border-radius:24px;object-fit:contain;background:#fff;box-shadow:0 10px 26px rgba(38,50,71,.14);flex:none}
-.brandtxt h1{font-size:42px;margin:0;line-height:1.05;letter-spacing:.2px;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--epurp));-webkit-background-clip:text;background-clip:text;color:transparent}
-.tagline{letter-spacing:4px;font-size:13px;font-weight:800;color:#B8860B;margin-top:5px}
-.powered{font-size:13.5px;color:var(--mut);margin-top:4px}.powered b{color:var(--ink);font-weight:700}
-.livepill{margin-left:auto;text-align:right;flex:none}
-.menubtn{display:none!important}
-nav.mainnav{max-width:1100px;margin:auto;display:flex;gap:2px;padding:6px 14px 12px;flex-wrap:wrap}
-nav.mainnav button{border:0;background:transparent;color:var(--mut);padding:9px 13px;border-radius:11px;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px;transition:.18s;position:relative}
+header{background:linear-gradient(180deg,#EEF3FF 0%,#F7F2FF 55%,#FFFFFF 100%);border-bottom:1px solid var(--bd)}
+.masthead{max-width:1100px;margin:auto;text-align:center;padding:30px 18px 20px}
+.logocard{display:inline-block;background:#fff;border:1px solid var(--bd);border-radius:28px;padding:16px 26px;box-shadow:0 18px 40px rgba(116,87,232,.16)}
+.logocard img{display:block;height:150px;width:auto;object-fit:contain}
+.masthead h1{font-size:46px;margin:16px 0 4px;font-weight:800;letter-spacing:.2px;background:linear-gradient(90deg,var(--blue),var(--violet),var(--epurp));-webkit-background-clip:text;background-clip:text;color:transparent}
+.masthead .tag{letter-spacing:5px;font-size:13px;font-weight:800;color:#C79A2E}
+.masthead .pow{font-size:13.5px;color:var(--mut);margin-top:6px}.masthead .pow b{color:var(--ink)}
+.masthead .liveline{margin-top:12px}
+.navwrap{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);box-shadow:0 8px 24px rgba(71,118,245,.08)}
+nav.mainnav{max-width:1100px;margin:auto;display:flex;gap:4px;padding:10px 14px;flex-wrap:wrap;justify-content:center}
+nav.mainnav button{border:1.5px solid transparent;background:transparent;color:var(--mut);padding:10px 15px;border-radius:999px;cursor:pointer;font-weight:700;font-family:inherit;font-size:14.5px;transition:.18s}
 nav.mainnav button:hover{color:var(--blue);background:#EFF4FF;transform:translateY(-1px)}
 nav.mainnav button:focus-visible{outline:2px solid var(--eblue);outline-offset:2px}
-nav.mainnav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;box-shadow:0 6px 14px rgba(116,87,232,.32)}
-nav.mainnav button.on::after{content:'';position:absolute;left:22%;right:22%;bottom:-5px;height:3px;border-radius:99px;background:var(--gold)}
+nav.mainnav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;box-shadow:0 8px 18px rgba(116,87,232,.32)}
 @media(max-width:760px){
- .brandbar{padding:14px 14px 8px;gap:14px;flex-wrap:wrap}.brandbar img.logo{width:86px;height:86px;border-radius:19px}
- .brandtxt h1{font-size:30px}.tagline{font-size:11px;letter-spacing:2.8px}.powered{font-size:12px}.livepill{display:none}
- nav.mainnav{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 13px}
- nav.mainnav button{flex:1 1 30%;text-align:center;padding:11px 6px;font-size:13.5px;border:1.5px solid var(--bd);background:#fff;white-space:nowrap}
+ .masthead{padding:22px 14px 16px}.logocard{padding:12px 18px;border-radius:22px}.logocard img{height:104px}
+ .masthead h1{font-size:32px}.masthead .tag{font-size:11.5px;letter-spacing:3.5px}
+ nav.mainnav{gap:6px;padding:9px 10px}
+ nav.mainnav button{flex:1 1 30%;text-align:center;padding:11px 5px;font-size:13.5px;border:1.5px solid var(--bd);background:#fff;white-space:nowrap}
  nav.mainnav button.on{border-color:transparent}
 }
 main{max-width:1100px;margin:auto;padding:16px}.page{display:none;animation:fade .3s}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
@@ -49,12 +49,14 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#F0F5FF,#fff);b
 @media(max-width:640px){.hero .big{font-size:34px}nav button{padding:7px 10px;font-size:13px}}
 </style></head><body>
 <header>
-<div class="brandbar">
-<img class="logo" src="/static/logo.png" alt="Tawfiq CryptoSignal logo">
-<div class="brandtxt"><h1>Tawfiq CryptoSignal</h1><div class="tagline">TRACK • ALERT • GROW</div><div class="powered">Powered by: <b>Abdifatah Elmi Muhumed</b></div></div>
-<div class="livepill"><span class="badge">● LIVE · Binance</span><div class="mut" style="margin-top:5px">AI Portfolio Intelligence</div></div>
+<div class="masthead">
+<div class="logocard"><img src="/static/logo.png" alt="Tawfiq CryptoSignal — official logo"></div>
+<h1>Tawfiq CryptoSignal</h1>
+<div class="tag">TRACK • ALERT • GROW</div>
+<div class="pow">Powered by: <b>Abdifatah Elmi Muhumed</b></div>
+<div class="liveline"><span class="badge">● LIVE · Binance Real-Time</span> <span class="badge" style="background:#F1EBFF;color:#6D4BD8">🤖 Tawfiq AI Intelligence</span></div>
 </div>
-<nav class="mainnav" id="mainNav" aria-label="Main navigation"><button data-p="dash" class="on">🏠 Dashboard</button><button data-p="port">💼 My Portfolio</button><button data-p="mkt">📊 Market Highlights</button><button data-p="chart">📉 Charts</button><button data-p="ai">🤖 Tawfiq AI Analyst</button><button data-p="set">⚙️ Settings</button><button data-p="about">ℹ️ About</button></nav>
+<div class="navwrap"><nav class="mainnav" id="mainNav" aria-label="Main navigation"><button data-p="dash" class="on">🏠 Dashboard</button><button data-p="port">💼 My Portfolio</button><button data-p="mkt">📊 Market Highlights</button><button data-p="chart">📉 Charts</button><button data-p="ai">🤖 Tawfiq AI Analyst</button><button data-p="set">⚙️ Settings</button><button data-p="about">ℹ️ About</button></nav></div>
 </header>
 <main>
 <section id="dash" class="page on"><div id="status" class="mut">Loading live Binance prices…</div>
