@@ -47,7 +47,7 @@ footer{text-align:center;color:#889;padding:20px;font-size:13px}
 <section id="set" class="page"><h2 style="color:var(--emd)">Settings</h2><div class="card"><h3>Edit holdings (saved in this browser)</h3><div id="edit"></div>
 <button class="act" onclick="saveHoldings()">Save holdings</button> <button onclick="resetHoldings()">Reset to 28 Oct 2026 baseline</button>
 <p class="mut">Original baseline: BTC 0.006198 @ $80,642.26 ($500) · BNB 0.398894 @ $752.08 ($300) · XRP 151.52 @ $1.32 ($200) · USDT 200 @ $1.00 ($200 reserve). Invested $ auto = qty × purchase price.</p></div>
-<div class="card"><h3>About</h3><p class="mut">Data: Binance primary via this Render backend, CoinGecko market highlights. No login, no keys, no trading. Alerts run in the Android app (background ~15 min); this web page alerts visually while open.</p><div id="apiStat"></div></div></section>
+<div class="card"><h3>About</h3><p class="mut">Data: ALL prices from Binance in real time (via this Render backend). CoinGecko only if Binance is unreachable. No login, no keys, no trading. Alerts run in the Android app (background ~15 min); this web page alerts visually while open.</p><div id="apiStat"></div></div></section>
 </main><footer>Tawfiq CryptoSignal — TRACK • ALERT • GROW · Monitoring/education only, not financial advice.</footer>
 <script>
 const DEF={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};

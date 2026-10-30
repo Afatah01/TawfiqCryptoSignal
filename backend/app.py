@@ -53,13 +53,32 @@ async def prices():
     _cache["prices"]=(time.time(),out); return out
 @app.get("/api/market")
 async def market():
-    if (v:=fresh("market",60)) is not None: return v
+    # ALL market data from Binance (real-time 24h tickers, USDT pairs), CoinGecko only as emergency fallback.
+    if (v:=fresh("market",20)) is not None: return v
+    NAMES={"BTC":"Bitcoin","ETH":"Ethereum","BNB":"BNB","XRP":"XRP","SOL":"Solana","DOGE":"Dogecoin","ADA":"Cardano","TRX":"TRON","AVAX":"Avalanche","LINK":"Chainlink","DOT":"Polkadot","MATIC":"Polygon","LTC":"Litecoin","SHIB":"Shiba Inu","BCH":"Bitcoin Cash","NEAR":"NEAR Protocol","UNI":"Uniswap","XLM":"Stellar","ETC":"Ethereum Classic","FIL":"Filecoin","APT":"Aptos","ARB":"Arbitrum","OP":"Optimism","INJ":"Injective","SUI":"Sui","PEPE":"Pepe","WIF":"dogwifhat","FET":"Artificial Superintelligence Alliance","RENDER":"Render","ATOM":"Cosmos"}
     try:
         async with httpx.AsyncClient(timeout=15) as c:
-            r=await c.get(f"{GECKO}/api/v3/coins/markets",params={"vs_currency":"usd","per_page":50,"page":1,"price_change_percentage":"24h"})
-            r.raise_for_status(); data=r.json()
+            r=await c.get(f"{BINANCE}/api/v3/ticker/24hr"); r.raise_for_status(); all_t=r.json()
+        rows=[]
+        for t in all_t:
+            sym=t.get("symbol","")
+            if not sym.endswith("USDT"): continue
+            base=sym[:-4]
+            if base not in NAMES: continue
+            rows.append({"id":base.lower(),"symbol":base.lower(),"name":NAMES[base],
+              "current_price":float(t["lastPrice"]),"price_change_percentage_24h":float(t["priceChangePercent"]),
+              "price_change_24h":float(t["priceChange"]),"high_24h":float(t["highPrice"]),"low_24h":float(t["lowPrice"]),
+              "total_volume":float(t.get("quoteVolume") or 0),"source":"Binance"})
+        rows.sort(key=lambda x:x["total_volume"], reverse=True)
+        rows.insert(0,{"id":"usdt","symbol":"usdt","name":"Tether","current_price":1.0,"price_change_percentage_24h":0.0,
+                       "price_change_24h":0.0,"high_24h":1.0,"low_24h":1.0,"total_volume":0.0,"source":"Pegged (display)"})
+        _cache["market"]=(time.time(),rows); return rows
     except Exception:
-        data=[]
-    _cache["market"]=(time.time(),data); return data
-if __name__=="__main__":
-    import uvicorn; uvicorn.run(app,host="0.0.0.0",port=int(os.environ.get("PORT","10000")))
+        try:
+            async with httpx.AsyncClient(timeout=15) as c:
+                r=await c.get(f"{GECKO}/api/v3/coins/markets",params={"vs_currency":"usd","per_page":50,"page":1,"price_change_percentage":"24h"})
+                r.raise_for_status(); data=r.json()
+            for d in data: d["source"]="CoinGecko (Binance unavailable - fallback)"
+            _cache["market"]=(time.time(),data); return data
+        except Exception:
+            return []

@@ -34,9 +34,10 @@ class Repository(private val dao:Dao, @Volatile var backendUrl:String) {
     } catch(e:Exception){ lastErr="$lastErr | CoinGecko: ${e.message}" }
     return out to (lastErr ?: "No price source reachable. Check connection.")
   }
+  // Market Highlights = Binance real-time (via backend /api/market). CoinGecko only if Binance+backend unreachable.
   suspend fun fetchMarket(): Pair<List<GeckoMarket>,String?> {
-    try { return Net.gecko.topMarkets() to null } catch(e:Exception){
-      try { Net.backend(backendUrl)?.let{ return it.market() to "CoinGecko unavailable, showing backend cache." } } catch(_:Exception){}
+    try { Net.backend(backendUrl)?.let{ val m=it.market(); if(m.isNotEmpty()) return m to null } } catch(_:Exception){}
+    try { return Net.gecko.topMarkets() to "Binance unavailable - showing CoinGecko fallback (labelled)." } catch(e:Exception){
       return emptyList<GeckoMarket>() to "Market data unavailable: ${e.message}"
     }
   }

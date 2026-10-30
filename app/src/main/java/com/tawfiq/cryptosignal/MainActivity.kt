@@ -164,7 +164,7 @@ class MainActivity : ComponentActivity() {
             items(gainers) { MarketRow(it) }
             item { Text("📉 Biggest losers (24h)", Modifier.padding(12.dp), fontWeight = FontWeight.Bold, color = DownRed) }
             items(losers) { MarketRow(it) }
-            item { Text("All coins (CoinGecko / backend fallback)", Modifier.padding(12.dp), fontWeight = FontWeight.Bold) }
+            item { Text("All coins (Binance real-time)", Modifier.padding(12.dp), fontWeight = FontWeight.Bold) }
             if (filtered.isEmpty()) item { Text("No market data yet — check connection and tap the top refresh button.", Modifier.padding(16.dp), color = Color.Gray) }
             items(filtered) { MarketRow(it) }
         }
@@ -281,7 +281,7 @@ class MainActivity : ComponentActivity() {
         } } }
         item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) { Column(Modifier.padding(14.dp)) {
             Text("Data & privacy", fontWeight = FontWeight.Bold)
-            Text("Stored locally only (SQLite): holdings baseline, snapshots, alert rules/history. Sent over HTTPS: public price requests to Binance/CoinGecko/your Render backend. No Binance login, no passwords, no trading/withdrawal permissions, no API keys in the APK.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+            Text("Stored locally only (SQLite): holdings baseline, snapshots, alert rules/history. Sent over HTTPS: public price requests to Binance (CoinGecko only as emergency fallback). No Binance login, no passwords, no trading/withdrawal permissions, no API keys in the APK.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
             Button(onClick = { exportText = buildString { append("symbol,quantity,purchasePrice,investedUsd,currentValue,pnl\n")
                 state.assets.forEach { append("${it.holding.symbol},${it.holding.quantity},${it.holding.purchasePrice},${it.holding.investedUsd},${it.currentValue},${it.pnl}\n") } } },
                 modifier = Modifier.fillMaxWidth()) { Text("Export portfolio (CSV preview)") }
