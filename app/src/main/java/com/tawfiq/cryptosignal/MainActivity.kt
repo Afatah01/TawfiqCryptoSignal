@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity() {
     LaunchedEffect(Unit) { kotlinx.coroutines.delay(1600); splash = false }
     MaterialTheme(colorScheme = lightColorScheme(primary = Emerald, secondary = Gold, background = LightBg, surface = Color.White)) {
         if (splash) { SplashScreen(); return@MaterialTheme }
-        val tabs = listOf("Dashboard", "Portfolio", "Market", "Alerts", "Charts", "Settings")
-        val icons = listOf(Icons.Filled.Home, Icons.Filled.Star, Icons.Filled.Search, Icons.Filled.Notifications, Icons.Filled.List, Icons.Filled.Settings)
+        val tabs = listOf("Dashboard", "Portfolio", "Market", "Charts", "AI", "Settings", "About")
+        val icons = listOf(Icons.Filled.Home, Icons.Filled.Star, Icons.Filled.Search, Icons.Filled.List, Icons.Filled.Face, Icons.Filled.Settings, Icons.Filled.Info)
         var tab by remember { mutableStateOf(0) }
         val state by vm.state.collectAsState()
         DisposableEffect(Unit) { vm.startStreaming(); onDispose { vm.stopStreaming() } }
@@ -69,9 +69,10 @@ class MainActivity : ComponentActivity() {
                     0 -> Dashboard(vm, state) { tab = it }
                     1 -> PortfolioScreen(vm, state)
                     2 -> MarketScreen(vm)
-                    3 -> AlertsScreen(vm)
-                    4 -> ChartsScreen(vm, state)
-                    else -> SettingsScreen(vm, state)
+                    3 -> ChartsScreen(vm, state)
+                    4 -> AiScreen(vm)
+                    5 -> SettingsScreen(vm, state)
+                    else -> AboutScreen()
                 }
             }
         }
@@ -114,7 +115,7 @@ class MainActivity : ComponentActivity() {
         items(state.assets) { a -> AssetCard(a) }
         item { Text("Estimates use live public prices × your stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.", Modifier.padding(16.dp), color = Color.Gray, style = MaterialTheme.typography.bodySmall) }
         item { Row(Modifier.padding(12.dp)) { Button(onClick = { go(2) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.weight(1f)) { Text("Market Highlights", color = Color.White) }
-            Spacer(Modifier.width(8.dp)); OutlinedButton(onClick = { go(3) }, modifier = Modifier.weight(1f)) { Text("Price Alerts") } } }
+            Spacer(Modifier.width(8.dp)); OutlinedButton(onClick = { go(4) }, modifier = Modifier.weight(1f)) { Text("🤖 Tawfiq AI") } } }
     }
 }
 @Composable fun StatCard(label: String, value: String, up: Boolean, modifier: Modifier = Modifier) {
@@ -255,44 +256,62 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable fun AiScreen(vm: MainViewModel) {
+    val ai by vm.aiText.collectAsState(); val busy by vm.aiBusy.collectAsState()
+    var q by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) { vm.loadAi() }
+    LazyColumn {
+        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.Transparent), shape = RoundedCornerShape(24.dp)) {
+            Box(Modifier.background(Brush.linearGradient(listOf(RoyalBlue, Violet, EPurple))).fillMaxWidth()) { Column(Modifier.padding(20.dp)) {
+                Text("🤖 TAWFIQ AI MARKET INTELLIGENCE", color = Color.White, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text("Real-time market analysis and intelligent insights — live Binance data. Analysis only, never guaranteed profits.", color = Color.White.copy(.9f))
+                Button(onClick = { vm.loadAi() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White), modifier = Modifier.padding(top = 8.dp)) { Text("↻ Refresh analysis", color = EPurple) }
+            } } } }
+        if (busy) item { LinearProgressIndicator(color = EPurple, modifier = Modifier.fillMaxWidth().padding(12.dp)) }
+        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
+            Text("💬 ASK TAWFIQ AI", fontWeight = FontWeight.Bold, color = EmeraldDark)
+            OutlinedTextField(q, { q = it }, label = { Text("Ask about BTC, XRP, your portfolio, risk…") }, modifier = Modifier.fillMaxWidth())
+            Button(onClick = { if (q.isNotBlank()) vm.askAi(q) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Ask Tawfiq AI ➤") }
+            Row { listOf("How is my investment performing?", "Should I hold my XRP?", "Compare BTC, BNB and XRP").forEach { chip -> TextButton(onClick = { q = chip; vm.askAi(chip) }) { Text(chip, style = MaterialTheme.typography.labelSmall) } } }
+        } } }
+        item { Text(ai, Modifier.padding(16.dp)) }
+    }
+}
+
+@Composable fun AboutScreen() {
+    LazyColumn { item { Card(Modifier.fillMaxWidth().padding(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(24.dp)) { Column(Modifier.padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(140.dp).clip(RoundedCornerShape(20.dp)))
+        Text("TAWFIQ CRYPTOSIGNAL", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
+        Text("TRACK • ALERT • GROW", color = Gold, fontWeight = FontWeight.Bold)
+        Text("AI-powered cryptocurrency market monitoring and portfolio intelligence.", Modifier.padding(top = 8.dp))
+        Text("Live data: Binance (primary, real-time) via secure backend. CoinGecko emergency fallback only. AI: RSI/MACD/EMA/Bollinger engine + OpenAI when configured (server-side). Portfolio: $1,200 fixed baseline, 28 October 2026. Monitoring & education only — no trading, no transfers, no Binance login.", color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
+        Text("Disclaimer: Crypto is volatile. AI analysis is interpretation, not financial advice or a guarantee.", color = Muted, style = MaterialTheme.typography.bodySmall)
+    } } } }
+}
+
 @Composable fun SettingsScreen(vm: MainViewModel, state: PortfolioState) {
-    val holdings by vm.holdings.collectAsState()
     var backend by remember { mutableStateOf(vm.backendUrl()) }
-    var exportText by remember { mutableStateOf("") }
     LazyColumn {
         item { Text("Settings", Modifier.padding(12.dp), style = MaterialTheme.typography.titleLarge, color = EmeraldDark, fontWeight = FontWeight.Bold) }
-        item { Text("Edit holdings — changes your baseline. Original baseline (28 Oct 2026): BTC 0.006198 @ $80,642.26 ($500), BNB 0.398894 @ $752.08 ($300), XRP 151.52 @ $1.32 ($200), USDT 200 @ $1.00 ($200 reserve).", Modifier.padding(horizontal = 12.dp), color = Color.Gray, style = MaterialTheme.typography.bodySmall) }
-        items(holdings) { h ->
-            var qty by remember(h.symbol, h.quantity) { mutableStateOf(h.quantity.toString()) }
-            var price by remember(h.symbol, h.purchasePrice) { mutableStateOf(h.purchasePrice.toString()) }
-            var alertOn by remember(h.symbol, h.alertEnabled) { mutableStateOf(h.alertEnabled) }
-            Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) { Column(Modifier.padding(14.dp)) {
-                Text("${h.symbol} — ${h.name}${if (h.isReserve) " (Emergency reserve)" else ""}", fontWeight = FontWeight.Bold)
-                OutlinedTextField(qty, { qty = it }, label = { Text("Quantity held") }, modifier = Modifier.fillMaxWidth())
-                OutlinedTextField(price, { price = it }, label = { Text("Purchase price (USD)") }, modifier = Modifier.fillMaxWidth())
-                Row(verticalAlignment = Alignment.CenterVertically) { Text("Coin alerts enabled"); Switch(alertOn, { alertOn = it }) }
-                Button(onClick = { val q = qty.toDoubleOrNull(); val p = price.toDoubleOrNull()
-                    if (q != null && p != null) vm.saveHolding(h.copy(quantity = q, purchasePrice = p, investedUsd = q * p, alertEnabled = alertOn)) },
-                    colors = ButtonDefaults.buttonColors(containerColor = Emerald), modifier = Modifier.fillMaxWidth()) { Text("Save ${h.symbol}") }
-            } } }
-        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) { Column(Modifier.padding(14.dp)) {
-            Text("Render backend URL", fontWeight = FontWeight.Bold)
-            Text("App tries Binance first, then this backend, then CoinGecko. Deploy backend/ to Render and paste its URL (no localhost on your phone).", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
-            OutlinedTextField(backend, { backend = it }, label = { Text("Backend URL") }, modifier = Modifier.fillMaxWidth())
-            Button(onClick = { vm.setBackendUrl(backend.trim()) }, modifier = Modifier.fillMaxWidth()) { Text("Save backend URL") }
-            Spacer(Modifier.height(8.dp)); OutlinedButton(onClick = { vm.testNotification() }, modifier = Modifier.fillMaxWidth()) { Text("Send test notification") }
-            Text("API status: Source ${state.source} • Last sync: ${timeStr(state.lastUpdate)}${if (state.isStale) " • STALE" else ""}", Modifier.padding(top = 8.dp), color = if (state.error != null) DownRed else UpGreen)
-            Text("Theme: Light (emerald/white/gold) default. Currency: USD.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
+            Text("📌 Original Investment (fixed — not editable)", fontWeight = FontWeight.Bold)
+            Text("BTC $500 · 0.006198 @ $80,642.26\nBNB $300 · 0.398894 @ $752.08\nXRP $200 · 151.52 @ $1.32\nUSDT $200 · 200 @ $1.00 (emergency reserve)\nTotal $1,200 (crypto $1,000 + reserve $200) · Baseline: 28 October 2026", color = Muted, style = MaterialTheme.typography.bodySmall)
         } } }
-        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) { Column(Modifier.padding(14.dp)) {
+        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
+            Text("🤖 AI & backend", fontWeight = FontWeight.Bold)
+            Text("App tries Binance first, then this Render backend (which also hosts Tawfiq AI), then CoinGecko fallback.", color = Muted, style = MaterialTheme.typography.bodySmall)
+            OutlinedTextField(backend, { backend = it }, label = { Text("Render backend URL") }, modifier = Modifier.fillMaxWidth())
+            Button(onClick = { vm.setBackendUrl(backend.trim()) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Save backend URL") }
+            Spacer(Modifier.height(8.dp)); OutlinedButton(onClick = { vm.testNotification() }, modifier = Modifier.fillMaxWidth()) { Text("Send test notification") }
+            OutlinedButton(onClick = { vm.loadAi() }, modifier = Modifier.fillMaxWidth()) { Text("Refresh Tawfiq AI analysis") }
+            Text("API status: Source ${state.source} • Last sync: ${timeStr(state.lastUpdate)}${if (state.isStale) " • STALE" else ""}", Modifier.padding(top = 8.dp), color = if (state.error != null) DownRed else UpGreen)
+            Text("Background alerts: WorkManager ~every 15 min (Android minimum). Foreground: immediate. Currency: USD. Theme: premium light.", color = Muted, style = MaterialTheme.typography.bodySmall)
+        } } }
+        item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
             Text("Data & privacy", fontWeight = FontWeight.Bold)
-            Text("Stored locally only (SQLite): holdings baseline, snapshots, alert rules/history. Sent over HTTPS: public price requests to Binance (CoinGecko only as emergency fallback). No Binance login, no passwords, no trading/withdrawal permissions, no API keys in the APK.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
-            Button(onClick = { exportText = buildString { append("symbol,quantity,purchasePrice,investedUsd,currentValue,pnl\n")
-                state.assets.forEach { append("${it.holding.symbol},${it.holding.quantity},${it.holding.purchasePrice},${it.holding.investedUsd},${it.currentValue},${it.pnl}\n") } } },
-                modifier = Modifier.fillMaxWidth()) { Text("Export portfolio (CSV preview)") }
-            if (exportText.isNotEmpty()) Text(exportText, Modifier.padding(top = 8.dp), style = MaterialTheme.typography.bodySmall)
+            Text("Stored locally only: holdings baseline (fixed), snapshots, alert rules/history. Network (HTTPS): Binance / your Render backend (AI). No Binance login, passwords, trading or withdrawal permissions. OpenAI key lives only on the Render server, never in this app.", color = Muted, style = MaterialTheme.typography.bodySmall)
             OutlinedButton(onClick = { vm.clearSnapshots() }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { Text("Clear chart history (snapshots)") }
-            Text("Disclaimer: Monitoring/education only. Not financial advice. No guaranteed opportunities or price predictions.", color = Color.Gray, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
+            Text("Disclaimer: Monitoring/education only. Not financial advice. No guaranteed opportunities.", color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
         } } }
     }
 }

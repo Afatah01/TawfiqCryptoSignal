@@ -6,7 +6,11 @@ import kotlinx.coroutines.flow.*
 import com.tawfiq.cryptosignal.*
 import com.tawfiq.cryptosignal.data.*
 import com.tawfiq.cryptosignal.util.Notify
-import okhttp3.WebSocket
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val dao = AppDb.get(app).dao()
@@ -93,6 +97,41 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun clearSnapshots() = viewModelScope.launch { dao.clearSnapshots() }
     fun setBackendUrl(url: String) { prefs.edit().putString("backend_url", url).apply(); repo.backendUrl = url; refresh() }
     fun backendUrl(): String = prefs.getString("backend_url", BuildConfig.DEFAULT_BACKEND_URL) ?: BuildConfig.DEFAULT_BACKEND_URL
+    private val _aiText = MutableStateFlow("Tap Refresh analysis — Tawfiq AI uses live Binance indicators (RSI, MACD, EMA, Bollinger, volume)."); val aiText: StateFlow<String> = _aiText
+    private val _aiBusy = MutableStateFlow(false); val aiBusy: StateFlow<Boolean> = _aiBusy
+    private val http = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build()
+    fun loadAi() = viewModelScope.launch {
+        _aiBusy.value = true
+        try {
+            val req = Request.Builder().url(backendUrl().trimEnd('/') + "/api/ai/analysis").build()
+            val body = withContext(Dispatchers.IO) { http.newCall(req).execute().body?.string() ?: "" }
+            val j = JSONObject(body); val arr = j.getJSONArray("analyses"); val sb = StringBuilder()
+            sb.append("Provider: ").append(j.optString("provider")).append("\nUpdated: ").append(java.util.Date(j.optLong("generatedAt"))).append("\n\n")
+            for (i in 0 until arr.length()) { val a = arr.getJSONObject(i)
+                sb.append(a.optString("symbol")).append("  ").append(String.format("USD %,.4g", a.optDouble("price")))
+                  .append("  [").append(a.optString("signal")).append("] ").append(a.optString("direction"))
+                  .append(" • RSI ").append(a.optDouble("rsi")).append(" • Risk ").append(a.optString("risk"))
+                  .append(" • Confidence ").append(a.optInt("confidencePct")).append("%\n")
+                val rs = a.optJSONArray("reasons"); if (rs != null) for (k in 0 until minOf(rs.length(), 3)) sb.append("• ").append(rs.optString(k)).append("\n")
+                if (a.has("portfolio")) { val pf = a.getJSONObject("portfolio"); sb.append("My holding: $").append(pf.optDouble("value")).append(" (P/L $").append(pf.optDouble("pnl")).append(")\n") }
+                sb.append("\n") }
+            val al = j.optJSONArray("alerts"); if (al != null && al.length() > 0) { sb.append("🔔 AI Alerts\n"); for (i in 0 until al.length()) { val a = al.getJSONObject(i); sb.append("• ").append(a.optString("symbol")).append(": ").append(a.optString("type")).append(" — ").append(a.optString("detail")).append("\n") } }
+            sb.append("\nAnalysis only — not financial advice, never guaranteed profits.")
+            _aiText.value = sb.toString()
+        } catch (e: Exception) { _aiText.value = "⚠ AI unavailable: ${e.message}. Check backend URL in Settings (needs the Render backend deployed)." }
+        _aiBusy.value = false
+    }
+    fun askAi(q: String) = viewModelScope.launch {
+        _aiBusy.value = true
+        try {
+            val payload = JSONObject().put("question", q).toString()
+            val req = Request.Builder().url(backendUrl().trimEnd('/') + "/api/ai/ask").post(payload.toRequestBody("application/json".toMediaType())).build()
+            val body = withContext(Dispatchers.IO) { http.newCall(req).execute().body?.string() ?: "" }
+            val j = JSONObject(body)
+            _aiText.value = "Q: " + q + "\n\n" + j.optString("answer") + "\n\nProvider: " + j.optString("provider") + " • Data: " + java.util.Date(j.optLong("dataTs"))
+        } catch (e: Exception) { _aiText.value = "⚠ Ask Tawfiq AI failed: ${e.message}" }
+        _aiBusy.value = false
+    }
     fun testNotification() = Notify.send(getApplication(), 999001, "Tawfiq CryptoSignal", "Test notification — alerts are working on this device.")
     override fun onCleared() { stopStreaming(); super.onCleared() }
 }
