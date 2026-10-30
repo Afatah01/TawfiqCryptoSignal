@@ -5,10 +5,29 @@
 <style>
 :root{--bg:#F4F7FC;--card:#FFFFFF;--blue:#4776F5;--eblue:#3987FF;--turq:#16C9B2;--violet:#9270F5;--epurp:#7457E8;--green:#18B981;--coral:#F36B7F;--gold:#F5BD55;--ink:#263247;--mut:#8793A5;--bd:#E8EDF5}
 *{box-sizing:border-box}body{margin:0;font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9;box-shadow:0 4px 20px rgba(71,118,245,.06)}
-header img{width:46px;height:46px;border-radius:14px;object-fit:cover}header h1{font-size:18px;margin:0}
-nav{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}nav button{border:1.5px solid var(--bd);background:#fff;color:var(--mut);padding:8px 13px;border-radius:999px;cursor:pointer;font-weight:700;font-family:inherit;transition:.2s}
-nav button:hover{transform:translateY(-1px);color:var(--blue);border-color:var(--blue)}nav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(116,87,232,.35)}
+header{background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:20;box-shadow:0 6px 24px rgba(71,118,245,.07)}
+.brandbar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:16px;padding:14px 18px 8px}
+.brandbar img.logo{width:84px;height:84px;border-radius:20px;object-fit:contain;background:#fff;box-shadow:0 8px 22px rgba(38,50,71,.13);flex:none}
+.brandtxt h1{font-size:25px;margin:0;line-height:1.05;letter-spacing:.2px;background:linear-gradient(90deg,var(--blue),var(--epurp));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{letter-spacing:3.5px;font-size:11px;font-weight:800;color:#B8860B;margin-top:3px}
+.powered{font-size:12px;color:var(--mut);margin-top:3px}.powered b{color:var(--ink);font-weight:700}
+.livepill{margin-left:auto;text-align:right;flex:none}
+.menubtn{display:none;margin-left:auto;background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border:0;width:46px;height:46px;border-radius:13px;font-size:21px;cursor:pointer;box-shadow:0 6px 16px rgba(116,87,232,.3)}
+nav.mainnav{max-width:1100px;margin:auto;display:flex;gap:2px;padding:6px 14px 12px;flex-wrap:wrap}
+nav.mainnav button{border:0;background:transparent;color:var(--mut);padding:9px 13px;border-radius:11px;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px;transition:.18s;position:relative}
+nav.mainnav button:hover{color:var(--blue);background:#EFF4FF;transform:translateY(-1px)}
+nav.mainnav button:focus-visible{outline:2px solid var(--eblue);outline-offset:2px}
+nav.mainnav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;box-shadow:0 6px 14px rgba(116,87,232,.32)}
+nav.mainnav button.on::after{content:'';position:absolute;left:22%;right:22%;bottom:-5px;height:3px;border-radius:99px;background:var(--gold)}
+@media(max-width:760px){
+ .brandbar{padding:10px 14px 6px;gap:12px}.brandbar img.logo{width:64px;height:64px;border-radius:16px}
+ .brandtxt h1{font-size:20px}.tagline{font-size:10px;letter-spacing:2.6px}.powered{font-size:11px}.livepill{display:none}
+ .menubtn{display:block}
+ nav.mainnav{display:none;flex-direction:column;align-items:stretch;gap:4px;padding:8px 14px 14px;border-top:1px solid var(--bd)}
+ nav.mainnav.open{display:flex;animation:fade .25s}
+ nav.mainnav button{text-align:left;padding:13px 15px;font-size:15px;border:1.5px solid var(--bd);background:#fff}
+ nav.mainnav button.on{border-color:transparent}
+}
 main{max-width:1100px;margin:auto;padding:16px}.page{display:none;animation:fade .3s}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
 .hero{background:linear-gradient(135deg,var(--blue),var(--violet) 55%,var(--epurp));color:#fff;border-radius:24px;padding:26px;box-shadow:0 16px 36px rgba(116,87,232,.32)}
 .hero .big{font-size:44px;font-weight:800;margin:6px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
@@ -31,8 +50,15 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#F0F5FF,#fff);b
 .allocbar{height:10px;border-radius:99px;background:#EDF1F9}.allocbar>div{height:10px;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--turq))}
 @media(max-width:640px){.hero .big{font-size:34px}nav button{padding:7px 10px;font-size:13px}}
 </style></head><body>
-<header><img src="/static/logo.png" alt="Tawfiq CryptoSignal"><h1>Tawfiq CryptoSignal</h1>
-<nav><button data-p="dash" class="on">🏠 Dashboard</button><button data-p="port">💼 My Portfolio</button><button data-p="mkt">📊 Market Highlights</button><button data-p="chart">📉 Charts</button><button data-p="ai">🤖 Tawfiq AI Analyst</button><button data-p="set">⚙️ Settings</button><button data-p="about">ℹ️ About</button></nav></header>
+<header>
+<div class="brandbar">
+<img class="logo" src="/static/logo.png" alt="Tawfiq CryptoSignal logo">
+<div class="brandtxt"><h1>Tawfiq CryptoSignal</h1><div class="tagline">TRACK • ALERT • GROW</div><div class="powered">Powered by: <b>Abdifatah Elmi Muhumed</b></div></div>
+<div class="livepill"><span class="badge">● LIVE · Binance</span><div class="mut" style="margin-top:5px">AI Portfolio Intelligence</div></div>
+<button class="menubtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+</div>
+<nav class="mainnav" id="mainNav" aria-label="Main navigation"><button data-p="dash" class="on">🏠 Dashboard</button><button data-p="port">💼 My Portfolio</button><button data-p="mkt">📊 Market Highlights</button><button data-p="chart">📉 Charts</button><button data-p="ai">🤖 Tawfiq AI Analyst</button><button data-p="set">⚙️ Settings</button><button data-p="about">ℹ️ About</button></nav>
+</header>
 <main>
 <section id="dash" class="page on"><div id="status" class="mut">Loading live Binance prices…</div>
 <div class="hero"><div>Total Portfolio Value (incl. $200 USDT reserve)</div><div class="big" id="total">—</div><div id="heroSub"></div><div id="hero24" style="color:#DCE9FF"></div></div>
@@ -90,13 +116,14 @@ canvas{width:100%;height:150px;background:linear-gradient(180deg,#F0F5FF,#fff);b
 AI: Tawfiq AI Engine (RSI, MACD, EMA, Bollinger, volume &amp; momentum) + OpenAI when configured — server-side only, keys never in the app.<br>
 Portfolio: $1,200 fixed baseline from 28 October 2026. Monitoring &amp; education only — no trading, no transfers, no Binance login.</p>
 <p class="mut"><b>Disclaimer:</b> Cryptocurrency is volatile. AI analysis is interpretation of market data, not financial advice and never a guarantee. Verify important decisions independently.</p></div></section>
-</main><div class="foot">Tawfiq CryptoSignal — TRACK • ALERT • GROW · Analysis only, not financial advice.</div>
+</main><div class="foot">Tawfiq CryptoSignal — TRACK • ALERT • GROW · Powered by: <b>Abdifatah Elmi Muhumed</b> · Analysis only, not financial advice.</div>
 <script>
 const H={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};
 let Q={},MKT=[],last=0,src='',AI=null,timer=null,aiTimer=null,seenAlerts=new Set();
 const $=id=>document.getElementById(id), usd=v=>(v<0?'-$':'$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%', cls=v=>v>=0?'up':'dn';
-function go(p){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.p===p));document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));$(p).classList.add('on');window.scrollTo(0,0);if(p==='chart')draw();if(p==='ai')loadAI()}
+function go(p){$('mainNav').classList.remove('open');$('menuBtn').setAttribute('aria-expanded','false');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.p===p));document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));$(p).classList.add('on');window.scrollTo(0,0);if(p==='chart')draw();if(p==='ai')loadAI()}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
+$('menuBtn').onclick=()=>{const n=$('mainNav');const open=n.classList.toggle('open');$('menuBtn').setAttribute('aria-expanded',open);$('menuBtn').textContent=open?'✕':'☰'};
 function assets(){return Object.entries(H).map(([s,h])=>{const q=Q[s];const price=q?q.price:h.buy;const val=price*h.qty;const pnl=val-h.inv;return{s,h,price,val,pnl,pnlPct:h.inv?pnl/h.inv*100:0,q}})}
 function snap(){const t=assets().reduce((x,y)=>x+y.val,0);let a=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');if(!a.length||Date.now()-a[a.length-1].ts>60000){a.push({ts:Date.now(),total:t});localStorage.setItem('tcs_snaps',JSON.stringify(a.slice(-300)))}}
 async function refresh(){try{const r=await fetch('/api/prices');Q=await r.json();last=Date.now();src='Binance (via Render)';render();snap();draw()}catch(e){$('status').innerHTML='<span class="err">⚠ Price load failed: '+e.message+'</span>'}

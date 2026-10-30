@@ -57,9 +57,12 @@ class MainActivity : ComponentActivity() {
         DisposableEffect(Unit) { vm.startStreaming(); onDispose { vm.stopStreaming() } }
         Scaffold(
             topBar = { TopAppBar(title = { Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.logo), null, Modifier.size(36.dp).clip(RoundedCornerShape(8.dp)))
-                Spacer(Modifier.width(8.dp)); Text("Tawfiq CryptoSignal", fontWeight = FontWeight.Bold, color = EmeraldDark)
-            } }, actions = { IconButton(onClick = { vm.refresh() }) { Icon(Icons.Filled.Refresh, "Refresh prices") } },
+                Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(56.dp).clip(RoundedCornerShape(14.dp)))
+                Spacer(Modifier.width(10.dp))
+                Column { Text("Tawfiq CryptoSignal", fontWeight = FontWeight.Bold, color = EmeraldDark, style = MaterialTheme.typography.titleMedium)
+                    Text("TRACK • ALERT • GROW", color = Gold, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                    Text("Powered by: Abdifatah Elmi Muhumed", color = Muted, style = MaterialTheme.typography.labelSmall) }
+            } }, actions = { IconButton(onClick = { vm.refresh() }) { Icon(Icons.Filled.Refresh, "Refresh prices", tint = RoyalBlue) } },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)) },
             bottomBar = { NavigationBar(containerColor = Color.White) { tabs.forEachIndexed { i, t ->
                 NavigationBarItem(selected = tab == i, onClick = { tab = i }, icon = { Icon(icons[i], t) }, label = { Text(t, maxLines = 1) }) } } }
@@ -83,7 +86,8 @@ class MainActivity : ComponentActivity() {
     Column(Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painterResource(R.drawable.logo), "Tawfiq CryptoSignal logo", Modifier.size(260.dp))
         Spacer(Modifier.height(12.dp)); CircularProgressIndicator(color = Gold)
-        Text("TRACK • ALERT • GROW", color = Emerald, fontWeight = FontWeight.Medium)
+        Text("TRACK • ALERT • GROW", color = Gold, fontWeight = FontWeight.Bold)
+        Text("Powered by: Abdifatah Elmi Muhumed", color = Muted, style = MaterialTheme.typography.bodySmall)
     }
 }
 
