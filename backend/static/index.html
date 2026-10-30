@@ -1,103 +1,144 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tawfiq CryptoSignal — Live Portfolio</title><link rel="icon" href="/static/logo.png">
+<title>Tawfiq CryptoSignal — AI Portfolio Intelligence</title><link rel="icon" href="/static/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#F4F7FC;--card:#FFFFFF;--blue:#4776F5;--turq:#16C9B2;--violet:#9270F5;--epurp:#7457E8;--green:#18B981;--coral:#F36B7F;--gold:#F5BD55;--ink:#263247;--mut:#8793A5}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid #E6EBF5;padding:10px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9;box-shadow:0 4px 20px rgba(71,118,245,.06)}
-header img{width:46px;height:46px;border-radius:14px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.12)}header h1{font-size:19px;color:var(--ink);margin:0;letter-spacing:.2px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}nav button{border:1.5px solid #E1E8F5;background:#fff;color:var(--mut);padding:9px 15px;border-radius:999px;cursor:pointer;font-weight:700;transition:.2s}
-nav button:hover{transform:translateY(-1px);border-color:var(--blue);color:var(--blue)}nav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(116,87,232,.35)}
-main{max-width:1080px;margin:auto;padding:16px}.page{display:none;animation:fade .3s ease}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-.hero{background:linear-gradient(135deg,var(--blue),var(--violet) 55%,var(--epurp));color:#fff;border-radius:24px;padding:26px;box-shadow:0 16px 36px rgba(116,87,232,.35)}
-.hero .big{font-size:44px;font-weight:800;margin:6px 0;letter-spacing:.3px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
-.card{background:var(--card);border:1px solid #E8EEF9;border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(38,50,71,.06)}
-.card h3{margin:.2em 0;color:var(--ink)}
-.g-blue{background:linear-gradient(135deg,#EEF3FF,#E3EBFF)} .g-green{background:linear-gradient(135deg,var(--green),#0ED6A5);color:#fff}.g-coral{background:linear-gradient(135deg,var(--coral),#FF9A8A);color:#fff}
-.g-btc{background:linear-gradient(135deg,#FFF3E0,#FFE3B3)} .g-bnb{background:linear-gradient(135deg,#FFF8E1,#FBE9B7)} .g-xrp{background:linear-gradient(135deg,#E3F2FD,#CDEBFF)} .g-usdt{background:linear-gradient(135deg,var(--turq),#4FE3D2);color:#fff}
+:root{--bg:#F4F7FC;--card:#FFFFFF;--blue:#4776F5;--eblue:#3987FF;--turq:#16C9B2;--violet:#9270F5;--epurp:#7457E8;--green:#18B981;--coral:#F36B7F;--gold:#F5BD55;--ink:#263247;--mut:#8793A5;--bd:#E8EDF5}
+*{box-sizing:border-box}body{margin:0;font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);padding:10px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:9;box-shadow:0 4px 20px rgba(71,118,245,.06)}
+header img{width:46px;height:46px;border-radius:14px;object-fit:cover}header h1{font-size:18px;margin:0}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}nav button{border:1.5px solid var(--bd);background:#fff;color:var(--mut);padding:8px 13px;border-radius:999px;cursor:pointer;font-weight:700;font-family:inherit;transition:.2s}
+nav button:hover{transform:translateY(-1px);color:var(--blue);border-color:var(--blue)}nav button.on{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(116,87,232,.35)}
+main{max-width:1100px;margin:auto;padding:16px}.page{display:none;animation:fade .3s}.page.on{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.hero{background:linear-gradient(135deg,var(--blue),var(--violet) 55%,var(--epurp));color:#fff;border-radius:24px;padding:26px;box-shadow:0 16px 36px rgba(116,87,232,.32)}
+.hero .big{font-size:44px;font-weight:800;margin:6px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(38,50,71,.06)}.card h3{margin:.2em 0}
+.g-tint{background:linear-gradient(135deg,#EEF3FF,#E9FDF8)} .g-btc{background:linear-gradient(135deg,#FFF3E0,#FFE3B3)} .g-bnb{background:linear-gradient(135deg,#FFF8E1,#FBE9B7)} .g-xrp{background:linear-gradient(135deg,#E3F2FD,#CDEBFF)} .g-usdt{background:linear-gradient(135deg,var(--turq),#4FE3D2);color:#fff}
 .coin{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;font-weight:800;color:#fff;margin-right:8px;vertical-align:middle}
-.c-BTC{background:linear-gradient(135deg,#F5A623,var(--gold))}.c-BNB{background:linear-gradient(135deg,#E3B341,var(--gold));color:#7A5A00}.c-XRP{background:linear-gradient(135deg,#4FA8E0,var(--blue))}.c-USDT{background:linear-gradient(135deg,#0FB9A8,var(--turq))}
+.c-BTC{background:linear-gradient(135deg,#F5A623,var(--gold))}.c-BNB{background:linear-gradient(135deg,#E3B341,var(--gold));color:#7A5A00}.c-XRP{background:linear-gradient(135deg,#4FA8E0,var(--blue))}.c-USDT{background:linear-gradient(135deg,#0FB9A8,var(--turq))}.c-ETH{background:var(--violet)}.c-SOL{background:var(--epurp)}.c-DOGE{background:#D8B45A}.c-ADA{background:var(--eblue)}
 .up{color:var(--green)} .dn{color:var(--coral)} .mut{color:var(--mut);font-size:13px}
-table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid #EFF3FA;text-align:left}th{color:var(--ink)}
-button.act{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(116,87,232,.3);transition:.2s}button.act:hover{transform:translateY(-2px)}button.act:active{transform:scale(.98)}
-button.ghost{background:#fff;border:1.5px solid #E1E8F5;color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer}
-input{width:100%;padding:11px;border:1.5px solid #E1E8F5;border-radius:12px;margin:4px 0 10px;background:#FBFCFF}input:focus{outline:2px solid var(--blue);border-color:transparent}
+button.act{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;border:0;padding:12px 20px;border-radius:999px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 8px 20px rgba(116,87,232,.3);transition:.2s}button.act:hover{transform:translateY(-2px)}button.act:disabled{opacity:.55}
+button.ghost{background:#fff;border:1.5px solid var(--bd);color:var(--ink);padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer;font-family:inherit}
+input,select{width:100%;padding:11px;border:1.5px solid var(--bd);border-radius:12px;margin:4px 0 10px;background:#FBFCFF;font-family:inherit}
 canvas{width:100%;height:150px;background:linear-gradient(180deg,#F0F5FF,#fff);border-radius:16px}
 .badge{background:#E6FBF3;color:#0B8A5F;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.sig{font-weight:800;padding:4px 12px;border-radius:999px;color:#fff;display:inline-block}.s-BUY{background:var(--green)}.s-SELL{background:var(--coral)}.s-HOLD{background:var(--blue)}.s-WAIT{background:var(--gold);color:#7A5A00}
+.chat{background:#fff;border:1px solid var(--bd);border-radius:20px;padding:16px}.msg{padding:10px 14px;border-radius:16px;margin:8px 0;max-width:85%}.me{background:linear-gradient(135deg,var(--blue),var(--epurp));color:#fff;margin-left:auto}.bot{background:#F0F5FF}
+.chip{border:1.5px solid var(--bd);background:#fff;border-radius:999px;padding:7px 12px;cursor:pointer;font-weight:600;margin:3px;font-family:inherit}.chip:hover{border-color:var(--blue);color:var(--blue)}
 .err{background:#FFEDEE;color:#C93A4B;padding:12px;border-radius:14px}
-footer{text-align:center;color:var(--mut);padding:20px;font-size:13px}
-.allocbar{height:10px;border-radius:99px;background:#EDF1F9;overflow:hidden}.allocbar>div{height:10px;border-radius:99px}
+.switch{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #EFF3FA}
+.foot{text-align:center;color:var(--mut);padding:22px;font-size:13px}
+.allocbar{height:10px;border-radius:99px;background:#EDF1F9}.allocbar>div{height:10px;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--turq))}
+@media(max-width:640px){.hero .big{font-size:34px}nav button{padding:7px 10px;font-size:13px}}
 </style></head><body>
-<header><img src="/static/logo.png" alt="logo"><h1>Tawfiq CryptoSignal</h1>
-<nav><button data-p="dash" class="on">Dashboard</button><button data-p="port">My Portfolio</button><button data-p="mkt">Market Highlights</button><button data-p="chart">Charts</button><button data-p="set">Settings</button></nav></header>
+<header><img src="/static/logo.png" alt="Tawfiq CryptoSignal"><h1>Tawfiq CryptoSignal</h1>
+<nav><button data-p="dash" class="on">🏠 Dashboard</button><button data-p="port">💼 My Portfolio</button><button data-p="mkt">📊 Market Highlights</button><button data-p="chart">📉 Charts</button><button data-p="ai">🤖 Tawfiq AI Analyst</button><button data-p="set">⚙️ Settings</button><button data-p="about">ℹ️ About</button></nav></header>
 <main>
-<section id="dash" class="page on">
- <div id="status" class="mut">Loading live prices…</div>
- <div class="hero"><div>Total Portfolio Value (incl. $200 USDT reserve)</div><div class="big" id="total">—</div>
- <div id="heroSub">Initial (28 Oct 2026): $1,200.00</div><div id="hero24" class="mut" style="color:#d7ecd7"></div></div>
- <div class="grid"><div class="card"><h3>Crypto invested $1,000 → now</h3><div id="cryptoV" style="font-size:24px;font-weight:700">—</div><div id="cryptoP"></div></div>
- <div class="card g-usdt"><h3 style='color:#fff'>Emergency reserve (USDT)</h3><div style="font-size:24px;font-weight:700">$200.00</div><div class="mut">Separate — excluded from crypto return</div></div>
- <div class="card g-blue"><h3>Best performer</h3><div id="best" style="font-size:22px;font-weight:700">—</div></div>
- <div class="card g-blue"><h3>Worst performer</h3><div id="worst" style="font-size:22px;font-weight:700">—</div></div></div>
- <div class="grid" id="dashCards"></div>
- <p class="mut">Estimates = live public prices × stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.</p>
- <button class="act" onclick="refresh()">↻ Refresh live prices</button>
-</section>
-<section id="port" class="page"><h2 style="color:var(--emd)">My Portfolio — baseline 28 Oct 2026</h2><div id="portSum" class="card"></div><div class="grid" id="portCards"></div></section>
-<section id="mkt" class="page"><h2 style="color:var(--emd)">Market Highlights <span class="mut">(market-wide, not your portfolio)</span></h2>
-<input id="q" placeholder="Search coins e.g. ETH, SOL..." oninput="renderMarket()"><div id="mktErr"></div>
-<h3 class="up">🚀 Biggest gainers (24h)</h3><div id="gainers"></div><h3 class="dn">📉 Biggest losers (24h)</h3><div id="losers"></div><h3>All coins</h3><div id="allCoins"></div></section>
-<section id="chart" class="page"><h2 style="color:var(--emd)">Portfolio Charts</h2>
-<p class="mut">Built from snapshots this browser records while the page refreshes (also saved in your browser). No invented history.</p>
-<div class="card"><h3>Total portfolio value</h3><canvas id="ch1" width="900" height="220"></canvas></div>
+<section id="dash" class="page on"><div id="status" class="mut">Loading live Binance prices…</div>
+<div class="hero"><div>Total Portfolio Value (incl. $200 USDT reserve)</div><div class="big" id="total">—</div><div id="heroSub"></div><div id="hero24" style="color:#DCE9FF"></div></div>
+<div class="grid"><div class="card g-tint"><h3>💎 Crypto Invested $1,000 → now</h3><div id="cryptoV" style="font-size:24px;font-weight:800">—</div><div id="cryptoP"></div></div>
+<div class="card g-usdt"><h3>🛡️ Emergency Reserve (USDT)</h3><div style="font-size:24px;font-weight:800">$200.00</div><div>Separate — never counted as crypto investment</div></div>
+<div class="card g-tint"><h3>🏆 Best Performer</h3><div id="best" style="font-size:22px;font-weight:800">—</div></div>
+<div class="card g-tint"><h3>📉 Worst Performer</h3><div id="worst" style="font-size:22px;font-weight:800">—</div></div></div>
+<div class="grid" id="dashCards"></div>
+<div class="card"><h3>📈 Portfolio performance (this browser's snapshots)</h3><canvas id="ch0" width="900" height="200"></canvas></div>
+<div class="card" id="dashAI"><h3>🤖 Latest AI Analysis</h3><div class="mut">Loading Tawfiq AI…</div></div>
+<p class="mut">Estimates = live Binance prices × stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.</p>
+<button class="act" onclick="refresh()">↻ Refresh live prices</button> <button class="ghost" onclick="go('ai')">🤖 Open Tawfiq AI Analyst</button></section>
+
+<section id="port" class="page"><h2>My Portfolio — fixed baseline 28 Oct 2026</h2><div id="portSum" class="card"></div><div class="grid" id="portCards"></div></section>
+
+<section id="mkt" class="page"><h2>Market Highlights <span class="mut">(Binance real-time · market-wide, not your portfolio · no predictions)</span></h2>
+<input id="q" placeholder="🔍 Search coins e.g. ETH, SOL..." oninput="renderMarket()">
+<h3 class="up">🚀 Biggest Gainers (24h)</h3><div id="gainers"></div><h3 class="dn">📉 Biggest Losers (24h)</h3><div id="losers"></div><h3>All Cryptocurrencies</h3><div id="allCoins"></div></section>
+
+<section id="chart" class="page"><h2>Portfolio Charts</h2><p class="mut">From snapshots recorded by this browser/app — never fabricated history.</p>
+<div class="card"><h3>Total portfolio value over time</h3><canvas id="ch1" width="900" height="220"></canvas></div>
 <div class="card"><h3>Asset allocation now</h3><div id="alloc"></div></div></section>
-<section id="set" class="page"><h2 style="color:var(--emd)">Settings</h2><div class="card"><h3>Edit holdings (saved in this browser)</h3><div id="edit"></div>
-<button class="act" onclick="saveHoldings()">Save holdings</button> <button onclick="resetHoldings()">Reset to 28 Oct 2026 baseline</button>
-<p class="mut">Original baseline: BTC 0.006198 @ $80,642.26 ($500) · BNB 0.398894 @ $752.08 ($300) · XRP 151.52 @ $1.32 ($200) · USDT 200 @ $1.00 ($200 reserve). Invested $ auto = qty × purchase price.</p></div>
-<div class="card"><h3>About</h3><p class="mut">Data: ALL prices from Binance in real time (via this Render backend). CoinGecko only if Binance is unreachable. No login, no keys, no trading. Alerts run in the Android app (background ~15 min); this web page alerts visually while open.</p><div id="apiStat"></div></div></section>
-</main><footer>Tawfiq CryptoSignal — TRACK • ALERT • GROW · Monitoring/education only, not financial advice.</footer>
+
+<section id="ai" class="page">
+<div class="hero"><div style="font-size:26px;font-weight:800">🤖 TAWFIQ AI MARKET INTELLIGENCE</div><div>Real-time market analysis and intelligent insights — powered by live Binance data<span id="aiMode"></span>.</div>
+<div id="aiStat" style="margin-top:8px"></div><button class="act" style="background:#fff;color:var(--epurp);margin-top:10px" onclick="loadAI(true)">↻ Refresh analysis</button></div>
+<div id="aiNarr"></div><h3>📊 Market Analysis (1h timeframe)</h3><div class="grid" id="aiCards"></div>
+<h3>🎯 AI Recommendations</h3><div class="grid">
+<div class="card"><h3 class="up">Potential Buy</h3><div id="gBuy"></div></div><div class="card"><h3 class="dn">Potential Sell / Risk-reduction</h3><div id="gSell"></div></div>
+<div class="card"><h3 style="color:var(--blue)">Hold</h3><div id="gHold"></div></div><div class="card"><h3 style="color:#B8860B">Wait — insufficient confirmation</h3><div id="gWait"></div></div></div>
+<h3>🔔 Intelligent AI Alerts</h3><div id="aiAlerts"></div>
+<h3>💬 ASK TAWFIQ AI</h3><div class="chat"><div id="chatBox"></div>
+<div><button class="chip" onclick="askQ(this)">Should I buy Bitcoin now?</button><button class="chip" onclick="askQ(this)">Should I hold my XRP?</button><button class="chip" onclick="askQ(this)">How is my investment performing?</button><button class="chip" onclick="askQ(this)">Which coin has strongest momentum?</button><button class="chip" onclick="askQ(this)">What are the biggest risks in my portfolio?</button><button class="chip" onclick="askQ(this)">Compare BTC, BNB and XRP</button></div>
+<div style="display:flex;gap:8px"><input id="askIn" placeholder="Ask Tawfiq AI about any coin, your portfolio, momentum, volume, risk…" onkeydown="if(event.key==='Enter')sendAsk()"><button class="act" onclick="sendAsk()">Send ➤</button></div>
+<div class="mut">Answers use fresh Binance data (timestamp shown). Facts vs AI interpretation are distinguished. Analysis only — never guaranteed profits, not financial advice.</div></div></section>
+
+<section id="set" class="page"><h2>Settings</h2>
+<div class="card"><h3>🔔 AI &amp; Alert Preferences</h3>
+<label class="mut">AI alert sensitivity (minimum momentum % to flag alerts)</label><select id="sSens"><option value="3">Sensitive — 3%</option><option value="5" selected>Normal — 5%</option><option value="8">Strict — 8%</option></select>
+<div class="switch"><span>Browser notifications for new AI alerts</span><input type="checkbox" id="sNotif" style="width:auto"></div>
+<label class="mut">Live refresh interval</label><select id="sRefresh"><option value="15000">15 seconds</option><option value="30000" selected>30 seconds</option><option value="60000">60 seconds</option></select>
+<label class="mut">AI monitoring frequency</label><select id="sAiFreq"><option value="300000">Every 5 minutes</option><option value="900000" selected>Every 15 minutes</option><option value="3600000">Hourly</option></select>
+<button class="act" onclick="saveSettings()">Save settings</button> <span id="setMsg" class="mut"></span>
+<p class="mut">All settings apply immediately and are stored in this browser.</p></div>
+<div class="card"><h3>📌 Original Investment (fixed — not editable)</h3>
+<p>BTC $500 · 0.006198 @ $80,642.26 &nbsp;|&nbsp; BNB $300 · 0.398894 @ $752.08<br>XRP $200 · 151.52 @ $1.32 &nbsp;|&nbsp; USDT $200 · 200 @ $1.00 (emergency reserve)<br><b>Total $1,200</b> (crypto $1,000 + reserve $200) · Baseline: 28 October 2026</p></div>
+<div class="card"><h3>ℹ️ Application information</h3><div id="apiStat" class="mut"></div>
+<p class="mut">OpenAI: add <b>OPENAI_API_KEY</b> in Render → your service → Environment to upgrade AI narratives &amp; chat to OpenAI. Without it, the built-in Binance-indicator engine still works. A ChatGPT subscription does <b>not</b> include API credits — OpenAI API is billed separately by OpenAI.</p></div></section>
+
+<section id="about" class="page"><div class="card" style="text-align:center;padding:34px">
+<img src="/static/logo.png" style="width:150px;border-radius:24px" alt="logo"><h1 style="margin:8px">TAWFIQ CRYPTOSIGNAL</h1>
+<div style="letter-spacing:3px;color:var(--gold);font-weight:800">TRACK • ALERT • GROW</div>
+<p><b>AI-powered cryptocurrency market monitoring and portfolio intelligence.</b></p>
+<p class="mut">Live data: Binance (primary, real-time) via this secure backend · CoinGecko emergency fallback only.<br>
+AI: Tawfiq AI Engine (RSI, MACD, EMA, Bollinger, volume &amp; momentum) + OpenAI when configured — server-side only, keys never in the app.<br>
+Portfolio: $1,200 fixed baseline from 28 October 2026. Monitoring &amp; education only — no trading, no transfers, no Binance login.</p>
+<p class="mut"><b>Disclaimer:</b> Cryptocurrency is volatile. AI analysis is interpretation of market data, not financial advice and never a guarantee. Verify important decisions independently.</p></div></section>
+</main><div class="foot">Tawfiq CryptoSignal — TRACK • ALERT • GROW · Analysis only, not financial advice.</div>
 <script>
-const DEF={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};
-let H=JSON.parse(localStorage.getItem('tcs_hold')||'null')||structuredClone(DEF);
-let Q={},MKT=[],last=0,src='';
-const $=id=>document.getElementById(id), usd=v=>(v<0?'-$':'$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%';
-const cls=v=>v>=0?'up':'dn';
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));$(b.dataset.p).classList.add('on'); if(b.dataset.p==='chart')draw()});
+const H={BTC:{name:'Bitcoin',qty:0.006198,buy:80642.26,inv:500},BNB:{name:'BNB',qty:0.398894,buy:752.08,inv:300},XRP:{name:'XRP',qty:151.52,buy:1.32,inv:200},USDT:{name:'Tether (Emergency Reserve)',qty:200,buy:1,inv:200,reserve:true}};
+let Q={},MKT=[],last=0,src='',AI=null,timer=null,aiTimer=null,seenAlerts=new Set();
+const $=id=>document.getElementById(id), usd=v=>(v<0?'-$':'$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}), pct=v=>(v>=0?'+':'')+v.toFixed(2)+'%', cls=v=>v>=0?'up':'dn';
+function go(p){document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.p===p));document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));$(p).classList.add('on');window.scrollTo(0,0);if(p==='chart')draw();if(p==='ai')loadAI()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 function assets(){return Object.entries(H).map(([s,h])=>{const q=Q[s];const price=q?q.price:h.buy;const val=price*h.qty;const pnl=val-h.inv;return{s,h,price,val,pnl,pnlPct:h.inv?pnl/h.inv*100:0,q}})}
-function snap(){const a=assets();const t=a.reduce((x,y)=>x+y.val,0);let arr=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');if(!arr.length||Date.now()-arr[arr.length-1].ts>60000){arr.push({ts:Date.now(),total:t});localStorage.setItem('tcs_snaps',JSON.stringify(arr.slice(-300))) } }
-async function refresh(){ $('status').textContent='Loading live prices…';
- try{const r=await fetch('/api/prices'); Q=await r.json(); last=Date.now(); src='Binance via Render backend'; render(); snap(); draw()}
- catch(e){ $('status').innerHTML='<span class="err">⚠ Could not load prices: '+e.message+' — retrying automatically.</span>'}
- try{const r=await fetch('/api/market'); MKT=await r.json(); renderMarket()}catch(e){}}
-function render(){const a=assets();const tot=a.reduce((x,y)=>x+y.val,0);const init=a.reduce((x,y)=>x+y.h.inv,0);const pnl=tot-init;
- const cry=a.filter(x=>!x.h.reserve), cv=cry.reduce((x,y)=>x+y.val,0), ci=cry.reduce((x,y)=>x+y.h.inv,0);
- const ch24=a.reduce((x,y)=>x+((y.q?y.q.change24hUsd:0)*y.h.qty),0);
- $('total').textContent=usd(tot);
- $('heroSub').innerHTML='Initial (28 Oct 2026): '+usd(init)+' • Since purchase: <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b>';
- $('hero24').textContent='24h market change (not since-purchase): '+usd(ch24);
- $('cryptoV').textContent=usd(cv); $('cryptoP').innerHTML='<span class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</span>';
- const by=[...cry].sort((x,y)=>y.pnlPct-x.pnlPct); $('best').innerHTML=by.length?by[0].s+' <span class="'+cls(by[0].pnlPct)+'">'+pct(by[0].pnlPct)+'</span>':'—';
- $('worst').innerHTML=by.length?by[by.length-1].s+' <span class="'+cls(by[by.length-1].pnlPct)+'">'+pct(by[by.length-1].pnlPct)+'</span>':'—';
+function snap(){const t=assets().reduce((x,y)=>x+y.val,0);let a=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');if(!a.length||Date.now()-a[a.length-1].ts>60000){a.push({ts:Date.now(),total:t});localStorage.setItem('tcs_snaps',JSON.stringify(a.slice(-300)))}}
+async function refresh(){try{const r=await fetch('/api/prices');Q=await r.json();last=Date.now();src='Binance (via Render)';render();snap();draw()}catch(e){$('status').innerHTML='<span class="err">⚠ Price load failed: '+e.message+'</span>'}
+ try{const r=await fetch('/api/market');MKT=await r.json();renderMarket()}catch(e){}}
+function render(){const a=assets(),tot=a.reduce((x,y)=>x+y.val,0),init=a.reduce((x,y)=>x+y.h.inv,0),pnl=tot-init,cry=a.filter(x=>!x.h.reserve),cv=cry.reduce((x,y)=>x+y.val,0),ci=cry.reduce((x,y)=>x+y.h.inv,0),ch24=a.reduce((x,y)=>x+((y.q?y.q.change24hUsd:0)*y.h.qty),0);
+ $('total').textContent=usd(tot);$('heroSub').innerHTML='Initial (28 Oct 2026): '+usd(init)+' • Since purchase: <b>'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b>';$('hero24').textContent='24h market change (not since-purchase): '+usd(ch24);
+ $('cryptoV').textContent=usd(cv);$('cryptoP').innerHTML='<span class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</span>';
+ const by=[...cry].sort((x,y)=>y.pnlPct-x.pnlPct);$('best').innerHTML=by.length?by[0].s+' <span class="'+cls(by[0].pnlPct)+'">'+pct(by[0].pnlPct)+'</span>':'—';$('worst').innerHTML=by.length?by[by.length-1].s+' <span class="'+cls(by[by.length-1].pnlPct)+'">'+pct(by[by.length-1].pnlPct)+'</span>':'—';
  $('status').innerHTML='<span class="badge">● LIVE</span> Source: '+src+' • Updated: '+new Date(last).toLocaleString();
- $('dashCards').innerHTML=a.map(card).join(''); $('portCards').innerHTML=a.map(card).join('');
- $('portSum').innerHTML='Total invested: <b>'+usd(init)+'</b> (Crypto $1,000 + Reserve $200)<br>Current: <b>'+usd(tot)+'</b> • P/L <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b><br>Crypto-only: <b class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</b>';
- $('alloc').innerHTML=a.map(x=>'<div>'+x.s+': '+(tot?(x.val/tot*100).toFixed(1):0)+'% ('+usd(x.val)+')<div style="background:#eee;height:10px;border-radius:99px"><div style="height:10px;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--turq));width:'+(tot?x.val/tot*100:0)+'%"></div></div></div>').join('');
- $('apiStat').textContent='API status: Live • Source: '+src+' • Last sync: '+new Date(last).toLocaleString();
-}
+ $('dashCards').innerHTML=a.map(card).join('');$('portCards').innerHTML=a.map(card).join('');
+ $('portSum').innerHTML='Total invested: <b>'+usd(init)+'</b> (Crypto $1,000 + Reserve $200) • Current: <b>'+usd(tot)+'</b> • P/L <b class="'+cls(pnl)+'">'+usd(pnl)+' ('+pct(init?pnl/init*100:0)+')</b> • Crypto-only <b class="'+cls(cv-ci)+'">'+usd(cv-ci)+' ('+pct(ci?(cv-ci)/ci*100:0)+')</b>';
+ $('alloc').innerHTML=a.map(x=>'<div style="margin:8px 0">'+x.s+': '+(tot?(x.val/tot*100).toFixed(1):0)+'% ('+usd(x.val)+')<div class="allocbar"><div style="width:'+(tot?x.val/tot*100:0)+'%"></div></div></div>').join('');
+ $('apiStat').textContent='API: Live • '+src+' • Last sync '+new Date(last).toLocaleString()+' • Backend https://tawfiq-cryptosignal.onrender.com';}
 const GC={BTC:'g-btc',BNB:'g-bnb',XRP:'g-xrp',USDT:'g-usdt'};
-function card(x){return '<div class="card '+GC[x.s]+'"><h3><span class="coin c-'+x.s+'">'+x.s[0]+'</span>'+x.s+' — '+x.h.name+'</h3><div style="font-size:22px;font-weight:800">'+usd(x.val)+'</div><div class="mut">Qty '+x.h.qty+' • Bought @ '+usd(x.h.buy)+' (invested '+usd(x.h.inv)+')</div>'+(x.h.reserve?'<div style="color:var(--gold)">Emergency reserve — separate</div>':(x.q?'<div>Now '+usd(x.price)+' • 24h <span class="'+cls(x.q.change24hPct)+'">'+pct(x.q.change24hPct)+'</span> • H '+usd(x.q.high24h)+' / L '+usd(x.q.low24h)+'</div><div class="'+cls(x.pnl)+'"><b>My P/L since purchase: '+usd(x.pnl)+' ('+pct(x.pnlPct)+')</b></div><div class="mut">Source: '+(x.q.source||'Backend')+'</div>':'<div class="mut">Waiting for price…</div>'))+'</div>'}
-function row(m){const u=(m.price_change_percentage_24h||0)>=0;return '<div class="card" style="margin:6px 0"><b>'+(m.symbol||'').toUpperCase()+' — '+m.name+'</b> <span style="float:right"><b>'+usd(m.current_price||0)+'</b> <span class="'+cls(m.price_change_percentage_24h||0)+'">'+pct(m.price_change_percentage_24h||0)+'</span></span><div class="mut">Vol '+usd(m.total_volume||0)+' • H '+usd(m.high_24h||0)+' / L '+usd(m.low_24h||0)+'</div></div>'}
-function renderMarket(){const q=($('q').value||'').toLowerCase();const f=MKT.filter(m=>!q||(m.name||'').toLowerCase().includes(q)||(m.symbol||'').includes(q));
- const s=[...MKT].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
- $('gainers').innerHTML=s.slice(0,3).map(row).join('')||'<p class="mut">Loading…</p>'; $('losers').innerHTML=s.slice(-3).reverse().map(row).join('');
- $('allCoins').innerHTML=f.map(row).join('')||'<p class="mut">No market data yet.</p>'}
-function draw(){const c=$('ch1');if(!c)return;const x=c.getContext('2d');const arr=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');x.clearRect(0,0,c.width,c.height);
- if(arr.length<2){x.fillStyle='#888';x.font='16px sans-serif';x.fillText('Not enough snapshots yet — keep this page open, it records every minute.',20,40);return}
- const vs=arr.map(a=>a.total),mn=Math.min(...vs),mx=Math.max(...vs),rg=(mx-mn)||1;x.strokeStyle='#046A38';x.lineWidth=2.5;x.beginPath();
- arr.forEach((a,i)=>{const px=i/(arr.length-1)*880+10,py=190-((a.total-mn)/rg)*160;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
- x.fillStyle='#667';x.fillText('Min '+usd(mn),10,215);x.fillText('Max '+usd(mx),800,215)}
-function editForm(){$('edit').innerHTML=Object.entries(H).map(([s,h])=>'<div style="border-bottom:1px solid #eee;padding:8px 0"><b>'+s+' — '+h.name+'</b><label class="mut">Quantity</label><input id="q_'+s+'" type="number" step="any" value="'+h.qty+'"><label class="mut">Purchase price USD</label><input id="p_'+s+'" type="number" step="any" value="'+h.buy+'"></div>').join('')}
-function saveHoldings(){Object.keys(H).forEach(s=>{const q=parseFloat($('q_'+s).value),p=parseFloat($('p_'+s).value);if(!isNaN(q)&&!isNaN(p)){H[s].qty=q;H[s].buy=p;H[s].inv=q*p}});localStorage.setItem('tcs_hold',JSON.stringify(H));refresh();alert('Saved in this browser.')}
-function resetHoldings(){H=structuredClone(DEF);localStorage.setItem('tcs_hold',JSON.stringify(H));editForm();refresh()}
-editForm(); refresh(); setInterval(refresh,30000);
+function card(x){return '<div class="card '+(GC[x.s]||'')+'"><h3><span class="coin c-'+x.s+'">'+x.s[0]+'</span>'+x.s+' — '+x.h.name+'</h3><div style="font-size:22px;font-weight:800">'+usd(x.val)+'</div><div class="mut">Qty '+x.h.qty+' • Bought @ '+usd(x.h.buy)+' (invested '+usd(x.h.inv)+')</div>'+(x.h.reserve?'<div>🛡️ Emergency reserve — kept separate. Never casually invested.</div>':(x.q?'<div>Live '+usd(x.price)+' • 24h <span class="'+cls(x.q.change24hPct)+'">'+pct(x.q.change24hPct)+'</span> • H '+usd(x.q.high24h)+' / L '+usd(x.q.low24h)+'</div><div class="'+cls(x.pnl)+'"><b>My P/L since purchase: '+usd(x.pnl)+' ('+pct(x.pnlPct)+')</b></div><div class="mut">Source: '+(x.q.source||'Binance')+'</div>':'<div class="mut">Waiting…</div>'))+'</div>'}
+function row(m){return '<div class="card" style="margin:6px 0"><span class="coin c-'+(m.symbol||'').toUpperCase()+'">'+(m.symbol||'?')[0].toUpperCase()+'</span><b>'+(m.symbol||'').toUpperCase()+' — '+m.name+'</b><span style="float:right"><b>'+usd(m.current_price||0)+'</b> <span class="'+cls(m.price_change_percentage_24h||0)+'">'+pct(m.price_change_percentage_24h||0)+'</span></span><div class="mut">Vol '+usd(m.total_volume||0)+' • H '+usd(m.high_24h||0)+' / L '+usd(m.low_24h||0)+' • '+(m.source||'Binance')+'</div></div>'}
+function renderMarket(){const q=($('q').value||'').toLowerCase(),f=MKT.filter(m=>!q||(m.name||'').toLowerCase().includes(q)||(m.symbol||'').includes(q)),s=[...MKT].sort((a,b)=>(b.price_change_percentage_24h||0)-(a.price_change_percentage_24h||0));
+ $('gainers').innerHTML=s.slice(0,3).map(row).join('')||'<p class="mut">Loading…</p>';$('losers').innerHTML=s.slice(-3).reverse().map(row).join('');$('allCoins').innerHTML=f.map(row).join('')||'<p class="mut">No data yet.</p>'}
+function drawChart(id){const c=$(id);if(!c)return;const x=c.getContext('2d'),a=JSON.parse(localStorage.getItem('tcs_snaps')||'[]');x.clearRect(0,0,c.width,c.height);if(a.length<2){x.fillStyle='#8793A5';x.font='15px Manrope';x.fillText('Not enough snapshots yet — page records one every minute.',20,40);return}
+ const vs=a.map(v=>v.total),mn=Math.min(...vs),mx=Math.max(...vs),rg=(mx-mn)||1,g=x.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(71,118,245,.35)');g.addColorStop(1,'rgba(22,201,178,.05)');
+ x.beginPath();a.forEach((v,i)=>{const px=i/(a.length-1)*880+10,py=165-((v.total-mn)/rg)*130;i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle='#4776F5';x.lineWidth=2.5;x.stroke();x.lineTo(890,190);x.lineTo(10,190);x.closePath();x.fillStyle=g;x.fill();x.fillStyle='#8793A5';x.fillText('Min '+usd(mn),10,198);x.fillText('Max '+usd(mx),790,198)}
+function draw(){drawChart('ch1');drawChart('ch0')}
+/* ---- AI ---- */
+async function loadAI(force){try{const st=await (await fetch('/api/ai/status')).json();$('aiMode').textContent=st.openaiConfigured?' + OpenAI':' (Binance-indicator engine; add OPENAI_API_KEY on Render for OpenAI)';}catch(e){}
+ try{AI=await (await fetch('/api/ai/analysis')).json();renderAI()}catch(e){$('aiCards').innerHTML='<div class="err">⚠ AI analysis unavailable: '+e.message+'</div>'}}
+function aiCard(a){if(a.error)return '<div class="card"><h3>'+a.symbol+'</h3><div class="err">'+a.error+'</div></div>';
+ return '<div class="card '+(GC[a.symbol]||'')+'"><h3><span class="coin c-'+a.symbol+'">'+a.symbol[0]+'</span>'+a.symbol+'</h3><div style="font-size:21px;font-weight:800">'+usd(a.price)+'</div><span class="sig s-'+a.signal+'">'+a.signal+'</span> <span class="mut">'+a.direction+' • Risk: '+a.risk+' • Confidence '+a.confidencePct+'%</span><div class="mut">RSI '+a.rsi+' • Vol x'+a.volumeRatio+' • Momentum '+pct(a.momentum24hPct)+'<br>Support '+usd(a.support)+' • Resistance '+usd(a.resistance)+(a.entryRange?'<br>Entry range '+usd(a.entryRange[0])+' – '+usd(a.entryRange[1]):'')+(a.target?'<br>Target scenario '+usd(a.target):'')+(a.stopLoss?'<br>Invalidation/stop '+usd(a.stopLoss):'')+'</div><div>'+a.reasons.map(r=>'• '+r).join('<br>')+'</div>'+(a.portfolio?'<div class="'+cls(a.portfolio.pnl)+'"><b>My holding: '+usd(a.portfolio.value)+' (P/L '+usd(a.portfolio.pnl)+' / '+pct(a.portfolio.pnlPct)+')</b></div>':'')+'<div class="mut">'+new Date(a.ts).toLocaleString()+' • Binance klines ('+a.timeframe+')</div></div>'}
+function renderAI(){if(!AI)return;const ok=AI.analyses.filter(a=>!a.error);$('aiStat').textContent='Last analysis: '+new Date(AI.generatedAt).toLocaleString()+' • Provider: '+AI.provider;
+ $('aiCards').innerHTML=AI.analyses.map(aiCard).join('');
+ const grp=s=>ok.filter(a=>a.signal===s).map(a=>'<div>• <b>'+a.symbol+'</b> '+usd(a.price)+' <span class="sig s-'+a.signal+'">'+a.signal+'</span></div>').join('')||'<div class="mut">None right now.</div>';
+ $('gBuy').innerHTML=grp('BUY');$('gSell').innerHTML=grp('SELL');$('gHold').innerHTML=grp('HOLD');$('gWait').innerHTML=grp('WAIT');
+ const sens=parseFloat(localStorage.getItem('tcs_sens')||'5');const al=(AI.alerts||[]).filter(a=>true);
+ $('aiAlerts').innerHTML=al.length?al.map(a=>'<div class="card" style="margin:6px 0">🔔 <b>'+a.symbol+': '+a.type+'</b><div>'+a.detail+'</div><div class="mut">Risk: '+a.risk+' • '+new Date(a.ts).toLocaleString()+'</div></div>').join(''):'<div class="card">No significant AI events at the current sensitivity ('+sens+'%).</div>';
+ $('dashAI').innerHTML='<h3>🤖 Latest AI Analysis <span class="mut">('+new Date(AI.generatedAt).toLocaleString()+')</span></h3>'+(AI.narrative?'<p>'+AI.narrative+'</p>':'')+ok.slice(0,4).map(a=>'<div>• <b>'+a.symbol+'</b> '+usd(a.price)+' <span class="sig s-'+a.signal+'">'+a.signal+'</span> <span class="mut">RSI '+a.rsi+' · '+a.direction+' · Risk '+a.risk+'</span></div>').join('')+'<br><button class="act" onclick="go(\'ai\')">Open Tawfiq AI Analyst →</button>';
+ if(localStorage.getItem('tcs_notif')==='1'&&'Notification'in window&&Notification.permission==='granted'){al.forEach(a=>{const k=a.symbol+a.type+a.ts;if(!seenAlerts.has(k)){seenAlerts.add(k);new Notification('Tawfiq AI: '+a.symbol+' '+a.type,{body:a.detail})}})}}
+function askQ(el){$('askIn').value=el.textContent;sendAsk()}
+async function sendAsk(){const q=$('askIn').value.trim();if(!q)return;$('chatBox').innerHTML+='<div class="msg me">'+q+'</div>';$('askIn').value='';$('chatBox').innerHTML+='<div class="msg bot" id="tmp">Tawfiq AI is analysing live Binance data…</div>';
+ try{const r=await (await fetch('/api/ai/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();$('tmp').innerHTML=r.answer+'<div class="mut">Data: '+new Date(r.dataTs||r.ts).toLocaleString()+' • '+(r.provider||'')+'</div>'}catch(e){$('tmp').textContent='⚠ AI request failed: '+e.message}}
+/* ---- Settings (functional, holdings NOT editable) ---- */
+function applyTimers(){if(timer)clearInterval(timer);if(aiTimer)clearInterval(aiTimer);timer=setInterval(refresh,parseInt(localStorage.getItem('tcs_refresh')||'30000'));aiTimer=setInterval(()=>loadAI(),parseInt(localStorage.getItem('tcs_aifreq')||'900000'))}
+function saveSettings(){localStorage.setItem('tcs_sens',$('sSens').value);localStorage.setItem('tcs_refresh',$('sRefresh').value);localStorage.setItem('tcs_aifreq',$('sAiFreq').value);localStorage.setItem('tcs_notif',$('sNotif').checked?'1':'0');
+ if($('sNotif').checked&&'Notification'in window)Notification.requestPermission();applyTimers();loadAI();$('setMsg').textContent='Saved ✓'}
+(function(){const s=localStorage.getItem('tcs_sens'),r=localStorage.getItem('tcs_refresh'),f=localStorage.getItem('tcs_aifreq');if(s)$('sSens').value=s;if(r)$('sRefresh').value=r;if(f)$('sAiFreq').value=f;$('sNotif').checked=localStorage.getItem('tcs_notif')==='1'})();
+refresh();loadAI();applyTimers();
 </script></body></html>

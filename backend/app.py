@@ -82,3 +82,67 @@ async def market():
             _cache["market"]=(time.time(),data); return data
         except Exception:
             return []
+
+# ---- Tawfiq AI Market Intelligence ----
+from ai_engine import analyse_symbol, openai_narrative, local_answer, AI_SYMBOLS
+import asyncio as _asyncio
+_ai_cache = {"analysis": (0, None), "ask": {}}
+_ai_hits = {}
+def _rate_ok(ip, limit=20, window=600):
+    now = time.time(); arr = [t for t in _ai_hits.get(ip, []) if now-t < window]
+    if len(arr) >= limit: return False
+    arr.append(now); _ai_hits[ip] = arr; return True
+
+@app.get("/api/ai/status")
+def ai_status():
+    return {"openaiConfigured": bool(os.environ.get("OPENAI_API_KEY")),
+            "mode": "OpenAI + Binance indicators" if os.environ.get("OPENAI_API_KEY") else "Binance indicators (add OPENAI_API_KEY on Render for OpenAI narratives)",
+            "model": os.environ.get("OPENAI_MODEL", "gpt-4o-mini"),
+            "symbols": AI_SYMBOLS, "note": "Analysis only. No trading. Not financial advice."}
+
+@app.get("/api/ai/analysis")
+async def ai_analysis(interval: str = "1h"):
+    if interval not in ("5m","15m","1h","4h","1d","1w"): interval = "1h"
+    t, v = _ai_cache["analysis"]
+    if v and time.time()-t < 300 and v.get("interval") == interval: return v
+    results = []
+    for s in AI_SYMBOLS:
+        try: results.append(await analyse_symbol(s, interval))
+        except Exception as e: results.append({"symbol": s, "error": str(e), "signal": "WAIT"})
+    alerts = []
+    for a in results:
+        if "error" in a: continue
+        if abs(a.get("momentum24hPct") or 0) >= 5: alerts.append({"symbol": a["symbol"], "type": "Significant price move", "detail": f"{a['momentum24hPct']:+.2f}% momentum, signal {a['signal']}", "risk": a["risk"], "ts": a["ts"]})
+        if (a.get("volumeRatio") or 0) >= 1.8: alerts.append({"symbol": a["symbol"], "type": "Unusual volume", "detail": f"Volume {a['volumeRatio']}x average", "risk": a["risk"], "ts": a["ts"]})
+        if a.get("rsi") is not None and (a["rsi"] >= 70 or a["rsi"] <= 30): alerts.append({"symbol": a["symbol"], "type": "RSI extreme", "detail": f"RSI {a['rsi']}", "risk": a["risk"], "ts": a["ts"]})
+    narrative = await openai_narrative("Give a short market overview (max 120 words) from this real Binance indicator data: " + str([{k: a.get(k) for k in ('symbol','price','signal','rsi','direction','risk')} for a in results])) if os.environ.get("OPENAI_API_KEY") else None
+    out = {"analyses": results, "alerts": alerts, "narrative": narrative,
+           "generatedAt": int(time.time()*1000), "interval": interval,
+           "provider": "OpenAI + Binance" if narrative else "Binance indicators (OpenAI not configured)"}
+    _ai_cache["analysis"] = (time.time(), out); return out
+
+@app.get("/api/ai/opportunities")
+async def ai_opportunities():
+    data = await ai_analysis()
+    ok = [a for a in data["analyses"] if "error" not in a]
+    return {"buy": [a for a in ok if a["signal"]=="BUY"], "sell": [a for a in ok if a["signal"]=="SELL"],
+            "hold": [a for a in ok if a["signal"]=="HOLD"], "wait": [a for a in ok if a["signal"]=="WAIT"],
+            "strongMomentum": sorted(ok, key=lambda x: x["score"], reverse=True)[:3],
+            "unusualVolume": sorted(ok, key=lambda x: x["volumeRatio"], reverse=True)[:3],
+            "generatedAt": data["generatedAt"]}
+
+from fastapi import Request as _Request
+from pydantic import BaseModel as _BM
+class _Ask(_BM): question: str
+@app.post("/api/ai/ask")
+async def ai_ask(body: _Ask, request: _Request):
+    ip = request.client.host if request.client else "unknown"
+    if not _rate_ok(ip): return {"answer": "Rate limit reached - please wait a few minutes.", "ts": int(time.time()*1000)}
+    q = (body.question or "").strip()[:500]
+    if not q: return {"answer": "Please ask a question.", "ts": int(time.time()*1000)}
+    data = await ai_analysis()
+    prices = {a["symbol"]: a.get("price") for a in data["analyses"]}
+    if os.environ.get("OPENAI_API_KEY"):
+        ans = await openai_narrative(f"User question: {q}\nReal Binance indicator data: {str([{k: a.get(k) for k in ('symbol','price','signal','rsi','ema20','ema50','support','resistance','volumeRatio','risk','portfolio')} for a in data['analyses']])}\nPortfolio baseline: BTC $500/0.006198@80642.26, BNB $300/0.398894@752.08, XRP $200/151.52@1.32, USDT $200 emergency reserve (separate). Answer in simple language, show facts vs interpretation.")
+        if ans: return {"answer": ans, "ts": int(time.time()*1000), "provider": "OpenAI + Binance", "dataTs": data["generatedAt"]}
+    r = local_answer(q, data["analyses"], prices); r["provider"] = "Binance indicators (add OPENAI_API_KEY for OpenAI chat)"; r["dataTs"] = data["generatedAt"]; return r
