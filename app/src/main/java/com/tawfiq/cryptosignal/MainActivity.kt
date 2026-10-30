@@ -118,8 +118,8 @@ class MainActivity : ComponentActivity() {
             StatCard("Worst performer", (state.worst?.holding?.symbol ?: "—") + "\n" + pct(state.worst?.pnlPct ?: 0.0), (state.worst?.pnlPct ?: 0.0) >= 0, Modifier.weight(1f)) } }
         items(state.assets) { a -> AssetCard(a) }
         item { Text("Estimates use live public prices × your stored quantities. Final Binance valuation may differ (fees/spread). Monitoring only — no trading.", Modifier.padding(16.dp), color = Color.Gray, style = MaterialTheme.typography.bodySmall) }
-        item { Row(Modifier.padding(12.dp)) { Button(onClick = { go(2) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.weight(1f)) { Text("Market Highlights", color = Color.White) }
-            Spacer(Modifier.width(8.dp)); OutlinedButton(onClick = { go(4) }, modifier = Modifier.weight(1f)) { Text("🤖 Tawfiq AI") } } }
+        item { Row(Modifier.padding(12.dp)) { Button(shape = RoundedCornerShape(50), onClick = { go(2) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.weight(1f)) { Text("Market Highlights", color = Color.White) }
+            Spacer(Modifier.width(8.dp)); OutlinedButton(shape = RoundedCornerShape(50), onClick = { go(4) }, modifier = Modifier.weight(1f)) { Text("🤖 Tawfiq AI") } } }
     }
 }
 @Composable fun StatCard(label: String, value: String, up: Boolean, modifier: Modifier = Modifier) {
@@ -199,7 +199,7 @@ class MainActivity : ComponentActivity() {
             Row { listOf("PORTFOLIO", "BTC", "BNB", "XRP").forEach { s -> FilterChip(selected = scope == s, onClick = { scope = s }, label = { Text(s) }, modifier = Modifier.padding(end = 4.dp)) } }
             Row { listOf("PCT_UP", "PCT_DOWN", "TARGET_ABOVE", "TARGET_BELOW", "PNL_USD").forEach { t -> FilterChip(selected = type == t, onClick = { type = t }, label = { Text(t) }, modifier = Modifier.padding(end = 4.dp)) } }
             OutlinedTextField(thresh, { thresh = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("Threshold (% for PCT, USD otherwise)") }, modifier = Modifier.fillMaxWidth())
-            Button(onClick = { thresh.toDoubleOrNull()?.let { vm.addRule(AlertRule(scope = scope, type = type, threshold = it)) } }, colors = ButtonDefaults.buttonColors(containerColor = Emerald), modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { Text("Add alert rule") }
+            Button(shape = RoundedCornerShape(50), onClick = { thresh.toDoubleOrNull()?.let { vm.addRule(AlertRule(scope = scope, type = type, threshold = it)) } }, colors = ButtonDefaults.buttonColors(containerColor = Emerald), modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { Text("Add alert rule") }
             Text("Quick portfolio presets 1% / 2% / 3% / 5% up & down are pre-installed. Portfolio % is vs your $1,200 baseline; coin % is vs your purchase price.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
         } } }
         item { Text("Active rules (${rules.size})", Modifier.padding(12.dp), fontWeight = FontWeight.Bold) }
@@ -208,7 +208,7 @@ class MainActivity : ComponentActivity() {
                 Text("${r.scope} • ${r.type} • ${r.threshold} • cooldown ${r.cooldownMin}m", Modifier.weight(1f))
                 Switch(checked = r.enabled, onCheckedChange = { vm.updateRule(r.copy(enabled = it)) })
                 IconButton(onClick = { vm.deleteRule(r) }) { Icon(Icons.Filled.Delete, "Delete rule") } } } }
-        item { Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween) { Text("Alert history", fontWeight = FontWeight.Bold); TextButton(onClick = { vm.clearHistory() }) { Text("Clear history") } } }
+        item { Row(Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween) { Text("Alert history", fontWeight = FontWeight.Bold); TextButton(shape = RoundedCornerShape(50), onClick = { vm.clearHistory() }) { Text("Clear history") } } }
         if (history.isEmpty()) item { Text("No alerts fired yet.", Modifier.padding(16.dp), color = Color.Gray) }
         items(history) { h -> Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Column(Modifier.padding(12.dp)) { Text(h.title, fontWeight = FontWeight.SemiBold); Text(h.message); Text("${timeStr(h.ts)} • ${h.symbol} @ ${usd(h.triggerPrice)} • ${pct(h.pctChange)}", color = Color.Gray, style = MaterialTheme.typography.bodySmall) } } }
@@ -234,7 +234,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable fun ChartCard(title: String, content: @Composable () -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+    Card(Modifier.fillMaxWidth().padding(12.dp).shadow(10.dp, RoundedCornerShape(22.dp)), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(22.dp)) {
         Column(Modifier.padding(14.dp)) { Text(title, fontWeight = FontWeight.Bold, color = EmeraldDark); content() } }
 }
 @Composable fun LineChart(values: List<Double>, color: Color) {
@@ -269,14 +269,14 @@ class MainActivity : ComponentActivity() {
             Box(Modifier.background(Brush.linearGradient(listOf(RoyalBlue, Violet, EPurple))).fillMaxWidth()) { Column(Modifier.padding(20.dp)) {
                 Text("🤖 TAWFIQ AI MARKET INTELLIGENCE", color = Color.White, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                 Text("Real-time market analysis and intelligent insights — live Binance data. Analysis only, never guaranteed profits.", color = Color.White.copy(.9f))
-                Button(onClick = { vm.loadAi() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White), modifier = Modifier.padding(top = 8.dp)) { Text("↻ Refresh analysis", color = EPurple) }
+                Button(shape = RoundedCornerShape(50), onClick = { vm.loadAi() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White), modifier = Modifier.padding(top = 8.dp)) { Text("↻ Refresh analysis", color = EPurple) }
             } } } }
         if (busy) item { LinearProgressIndicator(color = EPurple, modifier = Modifier.fillMaxWidth().padding(12.dp)) }
         item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
             Text("💬 ASK TAWFIQ AI", fontWeight = FontWeight.Bold, color = EmeraldDark)
             OutlinedTextField(q, { q = it }, label = { Text("Ask about BTC, XRP, your portfolio, risk…") }, modifier = Modifier.fillMaxWidth())
-            Button(onClick = { if (q.isNotBlank()) vm.askAi(q) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Ask Tawfiq AI ➤") }
-            Row { listOf("How is my investment performing?", "Should I hold my XRP?", "Compare BTC, BNB and XRP").forEach { chip -> TextButton(onClick = { q = chip; vm.askAi(chip) }) { Text(chip, style = MaterialTheme.typography.labelSmall) } } }
+            Button(shape = RoundedCornerShape(50), onClick = { if (q.isNotBlank()) vm.askAi(q) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Ask Tawfiq AI ➤") }
+            Row { listOf("How is my investment performing?", "Should I hold my XRP?", "Compare BTC, BNB and XRP").forEach { chip -> TextButton(shape = RoundedCornerShape(50), onClick = { q = chip; vm.askAi(chip) }) { Text(chip, style = MaterialTheme.typography.labelSmall) } } }
         } } }
         item { Text(ai, Modifier.padding(16.dp)) }
     }
@@ -305,16 +305,16 @@ class MainActivity : ComponentActivity() {
             Text("🤖 AI & backend", fontWeight = FontWeight.Bold)
             Text("App tries Binance first, then this Render backend (which also hosts Tawfiq AI), then CoinGecko fallback.", color = Muted, style = MaterialTheme.typography.bodySmall)
             OutlinedTextField(backend, { backend = it }, label = { Text("Render backend URL") }, modifier = Modifier.fillMaxWidth())
-            Button(onClick = { vm.setBackendUrl(backend.trim()) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Save backend URL") }
-            Spacer(Modifier.height(8.dp)); OutlinedButton(onClick = { vm.testNotification() }, modifier = Modifier.fillMaxWidth()) { Text("Send test notification") }
-            OutlinedButton(onClick = { vm.loadAi() }, modifier = Modifier.fillMaxWidth()) { Text("Refresh Tawfiq AI analysis") }
+            Button(shape = RoundedCornerShape(50), onClick = { vm.setBackendUrl(backend.trim()) }, colors = ButtonDefaults.buttonColors(containerColor = EPurple), modifier = Modifier.fillMaxWidth()) { Text("Save backend URL") }
+            Spacer(Modifier.height(8.dp)); OutlinedButton(shape = RoundedCornerShape(50), onClick = { vm.testNotification() }, modifier = Modifier.fillMaxWidth()) { Text("Send test notification") }
+            OutlinedButton(shape = RoundedCornerShape(50), onClick = { vm.loadAi() }, modifier = Modifier.fillMaxWidth()) { Text("Refresh Tawfiq AI analysis") }
             Text("API status: Source ${state.source} • Last sync: ${timeStr(state.lastUpdate)}${if (state.isStale) " • STALE" else ""}", Modifier.padding(top = 8.dp), color = if (state.error != null) DownRed else UpGreen)
             Text("Background alerts: WorkManager ~every 15 min (Android minimum). Foreground: immediate. Currency: USD. Theme: premium light.", color = Muted, style = MaterialTheme.typography.bodySmall)
         } } }
         item { Card(Modifier.fillMaxWidth().padding(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) { Column(Modifier.padding(16.dp)) {
             Text("Data & privacy", fontWeight = FontWeight.Bold)
             Text("Stored locally only: holdings baseline (fixed), snapshots, alert rules/history. Network (HTTPS): Binance / your Render backend (AI). No Binance login, passwords, trading or withdrawal permissions. OpenAI key lives only on the Render server, never in this app.", color = Muted, style = MaterialTheme.typography.bodySmall)
-            OutlinedButton(onClick = { vm.clearSnapshots() }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { Text("Clear chart history (snapshots)") }
+            OutlinedButton(shape = RoundedCornerShape(50), onClick = { vm.clearSnapshots() }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) { Text("Clear chart history (snapshots)") }
             Text("Disclaimer: Monitoring/education only. Not financial advice. No guaranteed opportunities.", color = Muted, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp))
         } } }
     }
