@@ -6,7 +6,7 @@ android {
     namespace = "com.tawfiq.cryptosignal"; compileSdk = 35
     defaultConfig {
         applicationId = "com.tawfiq.cryptosignal"; minSdk = 26; targetSdk = 35
-        versionCode = 1; versionName = "1.0.0"
+        versionCode = 2; versionName = "1.1.0"
         // Replace after you deploy the backend on Render (Settings screen can also override at runtime)
         buildConfigField("String", "DEFAULT_BACKEND_URL", "\"https://tawfiq-cryptosignal.onrender.com\"")
     }
